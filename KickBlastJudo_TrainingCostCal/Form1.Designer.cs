@@ -37,6 +37,11 @@
             button1 = new Button();
             label4 = new Label();
             label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            button2 = new Button();
+            button3 = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,6 +57,11 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button3);
+            groupBox1.Controls.Add(button2);
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(label6);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label3);
@@ -130,6 +140,58 @@
             label5.TabIndex = 2;
             label5.Text = "Current Weight  (Kg) : ";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(37, 239);
+            label6.Name = "label6";
+            label6.Size = new Size(289, 28);
+            label6.TabIndex = 3;
+            label6.Text = "Competition Weight Category : ";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(37, 297);
+            label7.Name = "label7";
+            label7.Size = new Size(275, 28);
+            label7.TabIndex = 4;
+            label7.Text = "No. of Competitions Entered : ";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Location = new Point(37, 354);
+            label8.Name = "label8";
+            label8.Size = new Size(230, 28);
+            label8.TabIndex = 5;
+            label8.Text = "Private Coaching Hours : ";
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.LightSkyBlue;
+            button2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(31, 455);
+            button2.Name = "button2";
+            button2.Size = new Size(146, 48);
+            button2.TabIndex = 6;
+            button2.Text = "Submit";
+            button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.LightCyan;
+            button3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button3.Location = new Point(184, 455);
+            button3.Name = "button3";
+            button3.Size = new Size(146, 48);
+            button3.TabIndex = 7;
+            button3.Text = "Clear Form";
+            button3.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 31F);
@@ -163,5 +225,10 @@
         private GroupBox groupBox2;
         private Label label4;
         private Label label5;
+        private Label label7;
+        private Label label6;
+        private Label label8;
+        private Button button3;
+        private Button button2;
     }
 }
