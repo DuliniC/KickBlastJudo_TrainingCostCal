@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickBlastJudo_TrainingCostCal.UI", "KickBlastJudo_TrainingCostCal\KickBlastJudo_TrainingCostCal.UI.csproj", "{78828F51-2D15-4EDC-B70F-2D247635711F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KickBlastJudo_TrainingCostCal", "KickBlastJudo_TrainingCostCal\KickBlastJudo_TrainingCostCal.csproj", "{78828F51-2D15-4EDC-B70F-2D247635711F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
