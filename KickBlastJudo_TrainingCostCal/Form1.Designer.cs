@@ -55,10 +55,12 @@
             comboBox1 = new ComboBox();
             label2 = new Label();
             groupBox2 = new GroupBox();
+            weightAnalysisLbl = new Label();
             label15 = new Label();
             totalCostLbl = new Label();
             label13 = new Label();
             groupBox3 = new GroupBox();
+            privateCoatchLbl = new Label();
             competitionCostLbl = new Label();
             trainingCostLbl = new Label();
             label12 = new Label();
@@ -66,8 +68,6 @@
             label10 = new Label();
             label9 = new Label();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            privateCoatchLbl = new Label();
-            weightAnalysisLbl = new Label();
             tabControl1.SuspendLayout();
             athleteTab.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -134,13 +134,13 @@
             // 
             addAthleteBtn.BackColor = SystemColors.GradientActiveCaption;
             addAthleteBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            addAthleteBtn.Location = new Point(593, 40);
+            addAthleteBtn.Location = new Point(593, 39);
             addAthleteBtn.Name = "addAthleteBtn";
             addAthleteBtn.Size = new Size(229, 44);
             addAthleteBtn.TabIndex = 8;
             addAthleteBtn.Text = "Add New Athlete";
             addAthleteBtn.UseVisualStyleBackColor = false;
-            addAthleteBtn.Click += addAthleteBtn_Click;
+            addAthleteBtn.Click += AddAthleteBtn_Click;
             // 
             // groupBox1
             // 
@@ -194,7 +194,7 @@
             competitionBx.Enabled = false;
             competitionBx.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             competitionBx.Location = new Point(373, 288);
-            competitionBx.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            competitionBx.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             competitionBx.Name = "competitionBx";
             competitionBx.Size = new Size(76, 34);
             competitionBx.TabIndex = 15;
@@ -211,12 +211,13 @@
             // 
             // weightBx
             // 
+            weightBx.DecimalPlaces = 3;
             weightBx.Enabled = false;
             weightBx.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             weightBx.Location = new Point(373, 176);
             weightBx.Maximum = new decimal(new int[] { 150, 0, 0, 0 });
             weightBx.Name = "weightBx";
-            weightBx.Size = new Size(78, 34);
+            weightBx.Size = new Size(102, 34);
             weightBx.TabIndex = 13;
             weightBx.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
@@ -261,6 +262,7 @@
             athleteSaveBtn.TabIndex = 6;
             athleteSaveBtn.Text = "Submit";
             athleteSaveBtn.UseVisualStyleBackColor = false;
+            athleteSaveBtn.Click += AthleteSaveBtn_Click;
             // 
             // label8
             // 
@@ -368,6 +370,15 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Monthly Statement";
             // 
+            // weightAnalysisLbl
+            // 
+            weightAnalysisLbl.AutoSize = true;
+            weightAnalysisLbl.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            weightAnalysisLbl.Location = new Point(210, 394);
+            weightAnalysisLbl.Name = "weightAnalysisLbl";
+            weightAnalysisLbl.Size = new Size(0, 28);
+            weightAnalysisLbl.TabIndex = 5;
+            // 
             // label15
             // 
             label15.AutoSize = true;
@@ -412,6 +423,15 @@
             groupBox3.Size = new Size(692, 217);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
+            // 
+            // privateCoatchLbl
+            // 
+            privateCoatchLbl.AutoSize = true;
+            privateCoatchLbl.Location = new Point(248, 135);
+            privateCoatchLbl.Name = "privateCoatchLbl";
+            privateCoatchLbl.Size = new Size(49, 28);
+            privateCoatchLbl.TabIndex = 5;
+            privateCoatchLbl.Text = "0.00";
             // 
             // competitionCostLbl
             // 
@@ -473,24 +493,6 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
-            // privateCoatchLbl
-            // 
-            privateCoatchLbl.AutoSize = true;
-            privateCoatchLbl.Location = new Point(248, 135);
-            privateCoatchLbl.Name = "privateCoatchLbl";
-            privateCoatchLbl.Size = new Size(49, 28);
-            privateCoatchLbl.TabIndex = 5;
-            privateCoatchLbl.Text = "0.00";
-            // 
-            // weightAnalysisLbl
-            // 
-            weightAnalysisLbl.AutoSize = true;
-            weightAnalysisLbl.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            weightAnalysisLbl.Location = new Point(210, 394);
-            weightAnalysisLbl.Name = "weightAnalysisLbl";
-            weightAnalysisLbl.Size = new Size(0, 28);
-            weightAnalysisLbl.TabIndex = 5;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 31F);
@@ -503,6 +505,7 @@
             Margin = new Padding(5);
             Name = "Form1";
             Text = "KickBlast Judo - Training Cost Calculator";
+            Load += Form1_Load;
             tabControl1.ResumeLayout(false);
             athleteTab.ResumeLayout(false);
             athleteTab.PerformLayout();
