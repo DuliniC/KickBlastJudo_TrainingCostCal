@@ -29,6 +29,7 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void AthleteSaveBtn_Click(object sender, EventArgs e)
         {
+            
             var athlete = new Athlete
             {
                 AthleteID = 1,
@@ -36,7 +37,8 @@ namespace KickBlastJudo_TrainingCostCal
                 TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
                 CurrentWeightKg = weightBx.Value,
                 CompetitionCategory = (WeightCategory)weightCatCbx.SelectedItem,
-                PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value)
+                PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
+                CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
             };
             //SaveAthlete(athlete);
         }
