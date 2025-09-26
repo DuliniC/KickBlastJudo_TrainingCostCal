@@ -16,6 +16,10 @@ namespace KickBlastJudo_TrainingCostCal
         public int CompetitionEntered { get; set; }
         public int PrivateCoachingHours { get; set; }
 
+        public bool IsValidForCompetition()
+        {
+            return TrainingPlan == TrainingPlan.Intermidiate || TrainingPlan == TrainingPlan.Elite;
+        }
     }
 
     public enum TrainingPlan

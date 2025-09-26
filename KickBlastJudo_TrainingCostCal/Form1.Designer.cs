@@ -68,6 +68,7 @@
             label10 = new Label();
             label9 = new Label();
             contextMenuStrip1 = new ContextMenuStrip(components);
+            comEligibleLbl = new Label();
             tabControl1.SuspendLayout();
             athleteTab.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -144,6 +145,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(comEligibleLbl);
             groupBox1.Controls.Add(athleteEditBtn);
             groupBox1.Controls.Add(prvtCoaHbx);
             groupBox1.Controls.Add(competitionBx);
@@ -230,6 +232,7 @@
             planCmbx.Name = "planCmbx";
             planCmbx.Size = new Size(419, 36);
             planCmbx.TabIndex = 12;
+            planCmbx.SelectedIndexChanged += planCmbx_SelectedIndexChanged;
             // 
             // athleteNameTbx
             // 
@@ -250,6 +253,7 @@
             clearFormBtn.TabIndex = 7;
             clearFormBtn.Text = "Clear Form";
             clearFormBtn.UseVisualStyleBackColor = false;
+            clearFormBtn.Click += clearFormBtn_Click;
             // 
             // athleteSaveBtn
             // 
@@ -329,10 +333,10 @@
             tabPage2.Controls.Add(comboBox1);
             tabPage2.Controls.Add(label2);
             tabPage2.Controls.Add(groupBox2);
-            tabPage2.Location = new Point(4, 40);
+            tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(850, 667);
+            tabPage2.Size = new Size(850, 678);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Cost Calculator";
             tabPage2.UseVisualStyleBackColor = true;
@@ -493,6 +497,17 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
+            // comEligibleLbl
+            // 
+            comEligibleLbl.AutoSize = true;
+            comEligibleLbl.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            comEligibleLbl.ForeColor = Color.RoyalBlue;
+            comEligibleLbl.Location = new Point(455, 291);
+            comEligibleLbl.Name = "comEligibleLbl";
+            comEligibleLbl.Size = new Size(0, 28);
+            comEligibleLbl.TabIndex = 18;
+            comEligibleLbl.Text = "For Elite and Intermidiate only";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 31F);
@@ -565,5 +580,6 @@
         private Label trainingCostLbl;
         private Label privateCoatchLbl;
         private Label weightAnalysisLbl;
+        private Label comEligibleLbl;
     }
 }
