@@ -18,14 +18,14 @@ namespace KickBlastJudo_TrainingCostCal
 
         public bool IsValidForCompetition()
         {
-            return TrainingPlan == TrainingPlan.Intermidiate || TrainingPlan == TrainingPlan.Elite;
+            return TrainingPlan == TrainingPlan.Intermediate || TrainingPlan == TrainingPlan.Elite;
         }
     }
 
     public enum TrainingPlan
     {
-        Begginer,
-        Intermidiate,
+        Beginner,
+        Intermediate,
         Elite
     }
 
@@ -38,4 +38,5 @@ namespace KickBlastJudo_TrainingCostCal
         Lightweight,
         Flyweight
     }
+
 }
