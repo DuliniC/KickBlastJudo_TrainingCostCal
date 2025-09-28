@@ -205,7 +205,7 @@
             // 
             calCostBtn.BackColor = Color.Aquamarine;
             calCostBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            calCostBtn.Location = new Point(196, 454);
+            calCostBtn.Location = new Point(196, 453);
             calCostBtn.Name = "calCostBtn";
             calCostBtn.RightToLeft = RightToLeft.Yes;
             calCostBtn.Size = new Size(152, 49);
@@ -392,10 +392,10 @@
             costCalTab.Controls.Add(costAthleteSlctCbx);
             costCalTab.Controls.Add(label2);
             costCalTab.Controls.Add(groupBox2);
-            costCalTab.Location = new Point(4, 29);
+            costCalTab.Location = new Point(4, 40);
             costCalTab.Name = "costCalTab";
             costCalTab.Padding = new Padding(3);
-            costCalTab.Size = new Size(850, 678);
+            costCalTab.Size = new Size(850, 667);
             costCalTab.TabIndex = 1;
             costCalTab.Text = "Cost Calculator";
             costCalTab.UseVisualStyleBackColor = true;
