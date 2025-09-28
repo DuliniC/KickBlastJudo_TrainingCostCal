@@ -5,8 +5,9 @@ namespace KickBlastJudo_TrainingCostCal
     public partial class Form1 : Form
     {
         private readonly DatabaseManager _databaseManager;
-        private bool placeholderRemoved = false;
-        private List<Athlete> athleteList;
+        private bool placeholderRemovedATab = false;
+        private bool placeholderAddedCalTab = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -78,11 +79,23 @@ namespace KickBlastJudo_TrainingCostCal
                 updateSaveBtn.Hide();
                 calCostBtn.Show();
 
+                if (!placeholderRemovedATab)
+                {
+                    var athleteList = atheleteSelectCbx.DataSource as List<Athlete>;
+                    athleteList.RemoveAt(0);
+
+                    atheleteSelectCbx.DataSource = null;
+                    atheleteSelectCbx.DataSource = athleteList;
+
+                    atheleteSelectCbx.DisplayMember = "AthleteName";
+                    atheleteSelectCbx.ValueMember = "AthleteID";
+
+                    atheleteSelectCbx.SelectedItem = selectedAthlete;
+
+                    placeholderRemovedATab = true;
+                }
             }
-            
-
         }
-
         private void AthleteEditBtn_Click(object sender, EventArgs e)
         {
             EnableAthleteFields();
@@ -96,11 +109,33 @@ namespace KickBlastJudo_TrainingCostCal
         {
             kbTabCtrl.SelectedTab = costCalTab;
             costAthleteSlctCbx.SelectedItem = atheleteSelectCbx.SelectedItem;
-            CalculateMonthlyStatement();
+            var selectedAthlete = costAthleteSlctCbx.SelectedItem as Athlete;
+            CalculateMonthlyStatement(selectedAthlete);
         }
 
         private void CostAthleteSlctCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
+            if (costAthleteSlctCbx.SelectedIndex > 0 && costAthleteSlctCbx.SelectedItem is Athlete selectedAthlete)
+            {
+                
+                if (!placeholderAddedCalTab)
+                {
+                    var athleteList = costAthleteSlctCbx.DataSource as List<Athlete>;
+                    athleteList.RemoveAt(0);
+
+                    costAthleteSlctCbx.DataSource = null;
+                    costAthleteSlctCbx.DataSource = athleteList;
+
+                    costAthleteSlctCbx.DisplayMember = "AthleteName";
+                    costAthleteSlctCbx.ValueMember = "AthleteID";
+
+                    costAthleteSlctCbx.SelectedItem = selectedAthlete;
+
+                    placeholderAddedCalTab = true;
+                }
+                CalculateMonthlyStatement(selectedAthlete);
+            }
             
         }
 
@@ -156,19 +191,14 @@ namespace KickBlastJudo_TrainingCostCal
             }
         }
 
-        private void CalculateMonthlyStatement()
+        private void CalculateMonthlyStatement(Athlete selectedAthlete)
         {
-            if (atheleteSelectCbx.SelectedIndex > 0 && atheleteSelectCbx.SelectedItem is Athlete selectedAthlete)
-            {
-                var costCal = new CostCalculator(selectedAthlete);
+            var costCal = new CostCalculator(selectedAthlete);
 
-                trainingCostLbl.Text = costCal.GetTrainingCost().ToString();
-                competitionCostLbl.Text = costCal.GetCompetitionCost().ToString();
-                privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
-                totalCostLbl.Text = costCal.GetTotalCost().ToString();
-
-
-            }
+            trainingCostLbl.Text = costCal.GetTrainingCost().ToString();
+            competitionCostLbl.Text = costCal.GetCompetitionCost().ToString();
+            privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
+            totalCostLbl.Text = costCal.GetTotalCost().ToString();
         }
 
         private string GetWeightAnalysis(WeightCategory weightCategory, decimal weight)
