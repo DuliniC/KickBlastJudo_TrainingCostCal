@@ -3,7 +3,7 @@ namespace KickBlastJudo_TrainingCostCal
     public partial class Form1 : Form
     {
         private readonly DatabaseManager _databaseManager;
-
+        private bool _isDataLoaded = false;
         public Form1()
         {
             InitializeComponent();
@@ -27,35 +27,38 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            LoadAthletesIntoComboBox();
             planCmbx.DataSource = Enum.GetValues(typeof(TrainingPlan));
             comCatCbx.DataSource = Enum.GetValues(typeof(WeightCategory));
-            LoadAthletesIntoComboBox();
+            _isDataLoaded = true;
         }
 
         private void AthleteSaveBtn_Click(object sender, EventArgs e)
         {
-
-            var athlete = new Athlete
+            if (ValidateAthleteInputs())
             {
-                AthleteName = athleteNameTbx.Text,
-                TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
-                CurrentWeightKg = weightBx.Value,
-                CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem,
-                PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
-                CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
-            };
-            try
-            {
-                var result = _databaseManager.AddAthlete(athlete);
-                MessageBox.Show("New Athlete Added Successfully");
-                LoadAthletesIntoComboBox();               
-                ClearAthleteForm();
-                DisableAthleteFields();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("New Athlete Adding not Successfull. \nTry again.");
-                throw;
+                var athlete = new Athlete
+                {
+                    AthleteName = athleteNameTbx.Text,
+                    TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
+                    CurrentWeightKg = weightBx.Value,
+                    CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem,
+                    PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
+                    CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
+                };
+                try
+                {
+                    var result = _databaseManager.AddAthlete(athlete);
+                    MessageBox.Show("New Athlete Added Successfully", "Success", MessageBoxButtons.OK);
+                    LoadAthletesIntoComboBox();
+                    ClearAthleteForm();
+                    DisableAthleteFields();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("New Athlete Adding not Successfull. \nTry again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw;
+                }
             }
         }
 
@@ -77,6 +80,11 @@ namespace KickBlastJudo_TrainingCostCal
         }
         private void AtheleteSelectCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!_isDataLoaded)
+            {
+                return;
+            }
+
             if (atheleteSelectCbx.SelectedItem is Athlete selectedAthlete)
             {
 
@@ -106,7 +114,7 @@ namespace KickBlastJudo_TrainingCostCal
             atheleteSelectCbx.Enabled = false;
             updateSaveBtn.Show();
             cancelUpdtBtn.Show();
-            cancelUpdtBtn.Enabled = true;
+            cancelUpdtBtn.Enabled = true;            
         }
 
         private void CalCostBtn_Click(object sender, EventArgs e)
@@ -119,6 +127,11 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void CostAthleteSlctCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!_isDataLoaded)
+            {
+                return;
+            }
+
             if (costAthleteSlctCbx.SelectedItem is Athlete selectedAthlete)
             {
                 CalculateMonthlyStatement(selectedAthlete);
@@ -126,7 +139,7 @@ namespace KickBlastJudo_TrainingCostCal
 
         }
 
-        private void cancelUpdtBtn_Click(object sender, EventArgs e)
+        private void CancelUpdtBtn_Click(object sender, EventArgs e)
         {
             updateSaveBtn.Hide();
             athleteEditBtn.Hide();
@@ -135,6 +148,46 @@ namespace KickBlastJudo_TrainingCostCal
             cancelUpdtBtn.Hide();
             atheleteSelectCbx.Enabled = true;
             DisableAthleteFields();
+        }
+
+        private void UpdateSaveBtn_Click(object sender, EventArgs e)
+        {
+            if (atheleteSelectCbx.SelectedItem is Athlete selectedAthlete)
+            {
+                if (ValidateAthleteInputs())
+                {
+                    try
+                    {
+                        selectedAthlete.AthleteName = athleteNameTbx.Text;
+                        selectedAthlete.TrainingPlan = (TrainingPlan)planCmbx.SelectedValue;
+                        selectedAthlete.CurrentWeightKg = weightBx.Value;
+                        selectedAthlete.CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem;
+                        selectedAthlete.PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value);
+                        selectedAthlete.CompetitionEntered = competitionBx.Enabled ? Convert.ToInt32(competitionBx.Value) : 0;
+
+                        int rowsAffected = _databaseManager.EditAthlete(selectedAthlete);
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Athlete updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to update athlete.", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred. Try again", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            LoadAthletesIntoComboBox();
+            DisableAthleteFields();
+            ClearAthleteForm();
+            ClearCostCalValues();
+            atheleteSelectCbx.Enabled = true;
         }
 
         //Supporting Methods
@@ -146,6 +199,15 @@ namespace KickBlastJudo_TrainingCostCal
             weightBx.Value = weightBx.Minimum;
             competitionBx.Value = 0;
             prvtCoaHbx.Value = 0;
+        }
+
+        private void ClearCostCalValues()
+        {
+            trainingCostLbl.Text = "0.00";
+            competitionCostLbl.Text = "0.00";
+            privateCoatchLbl.Text = "0.00";
+            totalCostLbl.Text = "0.00";
+            weightAnalysisLbl.Text = string.Empty;
         }
 
         private void EnableAthleteFields()
@@ -166,6 +228,7 @@ namespace KickBlastJudo_TrainingCostCal
             prvtCoaHbx.Enabled = false;
             competitionBx.Enabled = false;
         }
+
         private void LoadAthletesIntoComboBox()
         {
             try
@@ -178,15 +241,20 @@ namespace KickBlastJudo_TrainingCostCal
                 atheleteSelectCbx.DisplayMember = "AthleteName";
                 atheleteSelectCbx.ValueMember = "AthleteID";
 
+                atheleteSelectCbx.SelectedIndex = -1;
+                atheleteSelectCbx.Text = "-- Select Athlete --";
                 var listForCalTab = new List<Athlete>(athletes);
 
                 costAthleteSlctCbx.DataSource = listForCalTab;
                 costAthleteSlctCbx.DisplayMember = "AthleteName";
                 costAthleteSlctCbx.ValueMember = "AthleteID";
+
+                costAthleteSlctCbx.SelectedIndex = -1;
+                costAthleteSlctCbx.Text = "-- Select Athlete";
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to load athletes");
+                MessageBox.Show("Failed to load athletes", "Error", MessageBoxButtons.OK);
             }
         }
 
@@ -249,6 +317,49 @@ namespace KickBlastJudo_TrainingCostCal
             }
         }
 
+        // Validations
+        private bool ValidateAthleteInputs()
+        {
+            var validationErrors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(athleteNameTbx.Text))
+            {
+                validationErrors.Add("• Athlete Name cannot be empty.");
+            }
+
+            if (weightBx.Value <= 0)
+            {
+                validationErrors.Add("• Current Weight must be greater than zero.");
+            }
+
+            if (prvtCoaHbx.Value > 5)
+            {
+                validationErrors.Add("• Maximum private coaching hours is 5.");
+            }
+
+            if (prvtCoaHbx.Value < 0)
+            {
+                validationErrors.Add("• Private coaching hours cannot be negative.");
+            }
+
+            if (competitionBx.Enabled && competitionBx.Value < 0)
+            {
+                validationErrors.Add("• Competitions Entered cannot be a negative number.");
+            }
+
+            if (validationErrors.Any())
+            {
+                string errorMessage = string.Join(Environment.NewLine, validationErrors);
+
+                MessageBox.Show(errorMessage, "Validation Errors", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        
     }
 
 }

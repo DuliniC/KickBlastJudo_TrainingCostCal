@@ -124,6 +124,7 @@
             atheleteSelectCbx.Name = "atheleteSelectCbx";
             atheleteSelectCbx.Size = new Size(342, 39);
             atheleteSelectCbx.TabIndex = 10;
+            atheleteSelectCbx.Text = "-- Select Athlete --";
             atheleteSelectCbx.SelectedIndexChanged += AtheleteSelectCbx_SelectedIndexChanged;
             // 
             // label16
@@ -187,19 +188,20 @@
             cancelUpdtBtn.TabIndex = 21;
             cancelUpdtBtn.Text = "Cancel";
             cancelUpdtBtn.UseVisualStyleBackColor = false;
-            cancelUpdtBtn.Click += cancelUpdtBtn_Click;
+            cancelUpdtBtn.Click += CancelUpdtBtn_Click;
             // 
             // updateSaveBtn
             // 
             updateSaveBtn.BackColor = Color.LightSkyBlue;
             updateSaveBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            updateSaveBtn.Location = new Point(32, 455);
+            updateSaveBtn.Location = new Point(31, 455);
             updateSaveBtn.Name = "updateSaveBtn";
             updateSaveBtn.Size = new Size(146, 48);
             updateSaveBtn.TabIndex = 20;
             updateSaveBtn.Text = "Save";
             updateSaveBtn.UseVisualStyleBackColor = false;
             updateSaveBtn.Visible = false;
+            updateSaveBtn.Click += UpdateSaveBtn_Click;
             // 
             // calCostBtn
             // 
@@ -244,7 +246,6 @@
             prvtCoaHbx.Enabled = false;
             prvtCoaHbx.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             prvtCoaHbx.Location = new Point(373, 345);
-            prvtCoaHbx.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
             prvtCoaHbx.Name = "prvtCoaHbx";
             prvtCoaHbx.Size = new Size(75, 34);
             prvtCoaHbx.TabIndex = 16;
@@ -392,10 +393,10 @@
             costCalTab.Controls.Add(costAthleteSlctCbx);
             costCalTab.Controls.Add(label2);
             costCalTab.Controls.Add(groupBox2);
-            costCalTab.Location = new Point(4, 40);
+            costCalTab.Location = new Point(4, 29);
             costCalTab.Name = "costCalTab";
             costCalTab.Padding = new Padding(3);
-            costCalTab.Size = new Size(850, 667);
+            costCalTab.Size = new Size(850, 678);
             costCalTab.TabIndex = 1;
             costCalTab.Text = "Cost Calculator";
             costCalTab.UseVisualStyleBackColor = true;
@@ -407,6 +408,7 @@
             costAthleteSlctCbx.Name = "costAthleteSlctCbx";
             costAthleteSlctCbx.Size = new Size(557, 39);
             costAthleteSlctCbx.TabIndex = 8;
+            costAthleteSlctCbx.Text = "-- Select Athlete -- ";
             costAthleteSlctCbx.SelectedIndexChanged += CostAthleteSlctCbx_SelectedIndexChanged;
             // 
             // label2
@@ -511,8 +513,9 @@
             trainingCostLbl.AutoSize = true;
             trainingCostLbl.Location = new Point(248, 46);
             trainingCostLbl.Name = "trainingCostLbl";
-            trainingCostLbl.Size = new Size(0, 28);
+            trainingCostLbl.Size = new Size(49, 28);
             trainingCostLbl.TabIndex = 3;
+            trainingCostLbl.Text = "0.00";
             // 
             // label12
             // 
