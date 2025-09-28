@@ -198,7 +198,7 @@
             calCostBtn.Text = "Calculate Cost";
             calCostBtn.UseVisualStyleBackColor = false;
             calCostBtn.Visible = false;
-            calCostBtn.Click += calCostBtn_Click;
+            calCostBtn.Click += CalCostBtn_Click;
             // 
             // comEligibleLbl
             // 
@@ -393,7 +393,6 @@
             costAthleteSlctCbx.Size = new Size(557, 39);
             costAthleteSlctCbx.TabIndex = 8;
             costAthleteSlctCbx.SelectedIndexChanged += CostAthleteSlctCbx_SelectedIndexChanged;
-            costAthleteSlctCbx.SelectionChangeCommitted += costAthleteSlctCbx_SelectionChangeCommitted;
             // 
             // label2
             // 

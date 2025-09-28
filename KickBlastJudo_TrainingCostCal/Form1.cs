@@ -5,6 +5,8 @@ namespace KickBlastJudo_TrainingCostCal
     public partial class Form1 : Form
     {
         private readonly DatabaseManager _databaseManager;
+        private bool placeholderRemoved = false;
+        private List<Athlete> athleteList;
         public Form1()
         {
             InitializeComponent();
@@ -75,11 +77,9 @@ namespace KickBlastJudo_TrainingCostCal
                 clearFormBtn.Hide();
                 updateSaveBtn.Hide();
                 calCostBtn.Show();
+
             }
-            else
-            {
-                atheleteSelectCbx.SelectedIndex = -1;
-            }
+            
 
         }
 
@@ -92,14 +92,16 @@ namespace KickBlastJudo_TrainingCostCal
             updateSaveBtn.Show();
         }
 
-        private void calCostBtn_Click(object sender, EventArgs e)
+        private void CalCostBtn_Click(object sender, EventArgs e)
         {
             kbTabCtrl.SelectedTab = costCalTab;
+            costAthleteSlctCbx.SelectedItem = atheleteSelectCbx.SelectedItem;
+            CalculateMonthlyStatement();
         }
 
         private void CostAthleteSlctCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CalculateMonthlyStatement();
+            
         }
 
         //Supporting Methods
@@ -127,18 +129,24 @@ namespace KickBlastJudo_TrainingCostCal
             try
             {
                 List<Athlete> athletes = _databaseManager.GetAllAthletes();
+                
                 var placeholderAthlete = new Athlete
                 {
                     AthleteID = 0,
                     AthleteName = "-- Select Athlete --"
                 };
-                athletes.Insert(0, placeholderAthlete);
 
-                atheleteSelectCbx.DataSource = athletes;
+                var listForAthleteTab = new List<Athlete>(athletes);
+                listForAthleteTab.Insert(0, placeholderAthlete);
+
+                atheleteSelectCbx.DataSource = listForAthleteTab;
                 atheleteSelectCbx.DisplayMember = "AthleteName";
                 atheleteSelectCbx.ValueMember = "AthleteID";
 
-                costAthleteSlctCbx.DataSource = athletes;
+                var listForCalTab = new List<Athlete>(athletes);
+                listForCalTab.Insert(0, placeholderAthlete);
+
+                costAthleteSlctCbx.DataSource = listForCalTab;
                 costAthleteSlctCbx.DisplayMember = "AthleteName";
                 costAthleteSlctCbx.ValueMember = "AthleteID";
             }
