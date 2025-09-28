@@ -14,10 +14,46 @@ namespace KickBlastJudo_TrainingCostCal
         const decimal competitionFee = 250.00m; //per competition
         const decimal privateTutionFee = 150.00m; // per hour
 
-        public CostCalculator()
+        private readonly Athlete _athlete;
+
+        public CostCalculator(Athlete athlete)
         {
-            
+            _athlete = athlete;
+        }
+        public decimal GetTrainingCost()
+        {
+            switch (_athlete.TrainingPlan)
+            {
+                case TrainingPlan.Beginner:
+                    return beginnerTrainingFee;
+
+                case TrainingPlan.Intermediate:
+                    return intermidiateTrainingFee;
+
+                case TrainingPlan.Elite:
+                    return eliteTrainingFee;
+                default:
+                    return 0.00m;
+            }
         }
 
+        public decimal GetCompetitionCost()
+        {
+            return _athlete.CompetitionEntered * competitionFee;
+        }
+
+        public decimal GetPrivateTutionCost()
+        {
+            return _athlete.PrivateCoachingHours * privateTutionFee;
+        }
+
+        public decimal GetTotalCost()
+        {
+            var trainingCost = GetTrainingCost();
+            var competitionCost = GetCompetitionCost();
+            var privateTutionCost = GetPrivateTutionCost();
+
+            return trainingCost + competitionCost + privateTutionCost;
+        }   
     }
 }

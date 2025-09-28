@@ -30,16 +30,19 @@
         {
             components = new System.ComponentModel.Container();
             label1 = new Label();
-            tabControl1 = new TabControl();
+            kbTabCtrl = new TabControl();
             athleteTab = new TabPage();
             atheleteSelectCbx = new ComboBox();
             label16 = new Label();
             addAthleteBtn = new Button();
             groupBox1 = new GroupBox();
+            updateSaveBtn = new Button();
+            calCostBtn = new Button();
+            comEligibleLbl = new Label();
             athleteEditBtn = new Button();
             prvtCoaHbx = new NumericUpDown();
             competitionBx = new NumericUpDown();
-            weightCatCbx = new ComboBox();
+            comCatCbx = new ComboBox();
             weightBx = new NumericUpDown();
             planCmbx = new ComboBox();
             athleteNameTbx = new TextBox();
@@ -51,8 +54,8 @@
             label5 = new Label();
             label4 = new Label();
             label3 = new Label();
-            tabPage2 = new TabPage();
-            comboBox1 = new ComboBox();
+            costCalTab = new TabPage();
+            costAthleteSlctCbx = new ComboBox();
             label2 = new Label();
             groupBox2 = new GroupBox();
             weightAnalysisLbl = new Label();
@@ -68,14 +71,13 @@
             label10 = new Label();
             label9 = new Label();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            comEligibleLbl = new Label();
-            tabControl1.SuspendLayout();
+            kbTabCtrl.SuspendLayout();
             athleteTab.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)prvtCoaHbx).BeginInit();
             ((System.ComponentModel.ISupportInitialize)competitionBx).BeginInit();
             ((System.ComponentModel.ISupportInitialize)weightBx).BeginInit();
-            tabPage2.SuspendLayout();
+            costCalTab.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             SuspendLayout();
@@ -86,19 +88,19 @@
             label1.Font = new Font("Sans Serif Collection", 19.7999973F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.Location = new Point(12, 31);
             label1.Name = "label1";
-            label1.Size = new Size(422, 82);
+            label1.Size = new Size(274, 112);
             label1.TabIndex = 1;
             label1.Text = "KickBlast Judo";
             // 
-            // tabControl1
+            // kbTabCtrl
             // 
-            tabControl1.Controls.Add(athleteTab);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(12, 140);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(858, 711);
-            tabControl1.TabIndex = 7;
+            kbTabCtrl.Controls.Add(athleteTab);
+            kbTabCtrl.Controls.Add(costCalTab);
+            kbTabCtrl.Location = new Point(12, 140);
+            kbTabCtrl.Name = "kbTabCtrl";
+            kbTabCtrl.SelectedIndex = 0;
+            kbTabCtrl.Size = new Size(858, 711);
+            kbTabCtrl.TabIndex = 7;
             // 
             // athleteTab
             // 
@@ -121,6 +123,7 @@
             atheleteSelectCbx.Name = "atheleteSelectCbx";
             atheleteSelectCbx.Size = new Size(342, 39);
             atheleteSelectCbx.TabIndex = 10;
+            atheleteSelectCbx.SelectedIndexChanged += AtheleteSelectCbx_SelectedIndexChanged;
             // 
             // label16
             // 
@@ -145,11 +148,13 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(updateSaveBtn);
+            groupBox1.Controls.Add(calCostBtn);
             groupBox1.Controls.Add(comEligibleLbl);
             groupBox1.Controls.Add(athleteEditBtn);
             groupBox1.Controls.Add(prvtCoaHbx);
             groupBox1.Controls.Add(competitionBx);
-            groupBox1.Controls.Add(weightCatCbx);
+            groupBox1.Controls.Add(comCatCbx);
             groupBox1.Controls.Add(weightBx);
             groupBox1.Controls.Add(planCmbx);
             groupBox1.Controls.Add(athleteNameTbx);
@@ -169,17 +174,55 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Athlete Information";
             // 
+            // updateSaveBtn
+            // 
+            updateSaveBtn.BackColor = Color.LightSkyBlue;
+            updateSaveBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            updateSaveBtn.Location = new Point(32, 455);
+            updateSaveBtn.Name = "updateSaveBtn";
+            updateSaveBtn.Size = new Size(146, 48);
+            updateSaveBtn.TabIndex = 20;
+            updateSaveBtn.Text = "Save";
+            updateSaveBtn.UseVisualStyleBackColor = false;
+            updateSaveBtn.Visible = false;
+            // 
+            // calCostBtn
+            // 
+            calCostBtn.BackColor = Color.Aquamarine;
+            calCostBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            calCostBtn.Location = new Point(184, 454);
+            calCostBtn.Name = "calCostBtn";
+            calCostBtn.RightToLeft = RightToLeft.Yes;
+            calCostBtn.Size = new Size(152, 49);
+            calCostBtn.TabIndex = 19;
+            calCostBtn.Text = "Calculate Cost";
+            calCostBtn.UseVisualStyleBackColor = false;
+            calCostBtn.Visible = false;
+            calCostBtn.Click += calCostBtn_Click;
+            // 
+            // comEligibleLbl
+            // 
+            comEligibleLbl.AutoSize = true;
+            comEligibleLbl.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            comEligibleLbl.ForeColor = Color.RoyalBlue;
+            comEligibleLbl.Location = new Point(455, 291);
+            comEligibleLbl.Name = "comEligibleLbl";
+            comEligibleLbl.Size = new Size(285, 28);
+            comEligibleLbl.TabIndex = 18;
+            comEligibleLbl.Text = "For Elite and Intermidiate only";
+            // 
             // athleteEditBtn
             // 
             athleteEditBtn.BackColor = Color.DarkTurquoise;
             athleteEditBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            athleteEditBtn.Location = new Point(32, 401);
+            athleteEditBtn.Location = new Point(31, 455);
             athleteEditBtn.Name = "athleteEditBtn";
             athleteEditBtn.Size = new Size(146, 48);
             athleteEditBtn.TabIndex = 17;
             athleteEditBtn.Text = "Edit";
             athleteEditBtn.UseVisualStyleBackColor = false;
             athleteEditBtn.Visible = false;
+            athleteEditBtn.Click += AthleteEditBtn_Click;
             // 
             // prvtCoaHbx
             // 
@@ -201,15 +244,15 @@
             competitionBx.Size = new Size(76, 34);
             competitionBx.TabIndex = 15;
             // 
-            // weightCatCbx
+            // comCatCbx
             // 
-            weightCatCbx.Enabled = false;
-            weightCatCbx.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            weightCatCbx.FormattingEnabled = true;
-            weightCatCbx.Location = new Point(373, 231);
-            weightCatCbx.Name = "weightCatCbx";
-            weightCatCbx.Size = new Size(295, 36);
-            weightCatCbx.TabIndex = 14;
+            comCatCbx.Enabled = false;
+            comCatCbx.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comCatCbx.FormattingEnabled = true;
+            comCatCbx.Location = new Point(373, 231);
+            comCatCbx.Name = "comCatCbx";
+            comCatCbx.Size = new Size(295, 36);
+            comCatCbx.TabIndex = 14;
             // 
             // weightBx
             // 
@@ -232,7 +275,7 @@
             planCmbx.Name = "planCmbx";
             planCmbx.Size = new Size(419, 36);
             planCmbx.TabIndex = 12;
-            planCmbx.SelectedIndexChanged += planCmbx_SelectedIndexChanged;
+            planCmbx.SelectedIndexChanged += PlanCmbx_SelectedIndexChanged;
             // 
             // athleteNameTbx
             // 
@@ -246,6 +289,7 @@
             // clearFormBtn
             // 
             clearFormBtn.BackColor = Color.LightCyan;
+            clearFormBtn.Enabled = false;
             clearFormBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             clearFormBtn.Location = new Point(184, 455);
             clearFormBtn.Name = "clearFormBtn";
@@ -253,7 +297,7 @@
             clearFormBtn.TabIndex = 7;
             clearFormBtn.Text = "Clear Form";
             clearFormBtn.UseVisualStyleBackColor = false;
-            clearFormBtn.Click += clearFormBtn_Click;
+            clearFormBtn.Click += ClearFormBtn_Click;
             // 
             // athleteSaveBtn
             // 
@@ -328,26 +372,28 @@
             label3.TabIndex = 0;
             label3.Text = "Athlete Name : ";
             // 
-            // tabPage2
+            // costCalTab
             // 
-            tabPage2.Controls.Add(comboBox1);
-            tabPage2.Controls.Add(label2);
-            tabPage2.Controls.Add(groupBox2);
-            tabPage2.Location = new Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(850, 678);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Cost Calculator";
-            tabPage2.UseVisualStyleBackColor = true;
+            costCalTab.Controls.Add(costAthleteSlctCbx);
+            costCalTab.Controls.Add(label2);
+            costCalTab.Controls.Add(groupBox2);
+            costCalTab.Location = new Point(4, 40);
+            costCalTab.Name = "costCalTab";
+            costCalTab.Padding = new Padding(3);
+            costCalTab.Size = new Size(850, 667);
+            costCalTab.TabIndex = 1;
+            costCalTab.Text = "Cost Calculator";
+            costCalTab.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // costAthleteSlctCbx
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(205, 25);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(557, 39);
-            comboBox1.TabIndex = 8;
+            costAthleteSlctCbx.FormattingEnabled = true;
+            costAthleteSlctCbx.Location = new Point(205, 25);
+            costAthleteSlctCbx.Name = "costAthleteSlctCbx";
+            costAthleteSlctCbx.Size = new Size(557, 39);
+            costAthleteSlctCbx.TabIndex = 8;
+            costAthleteSlctCbx.SelectedIndexChanged += CostAthleteSlctCbx_SelectedIndexChanged;
+            costAthleteSlctCbx.SelectionChangeCommitted += costAthleteSlctCbx_SelectionChangeCommitted;
             // 
             // label2
             // 
@@ -497,31 +543,20 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
-            // comEligibleLbl
-            // 
-            comEligibleLbl.AutoSize = true;
-            comEligibleLbl.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            comEligibleLbl.ForeColor = Color.RoyalBlue;
-            comEligibleLbl.Location = new Point(455, 291);
-            comEligibleLbl.Name = "comEligibleLbl";
-            comEligibleLbl.Size = new Size(0, 28);
-            comEligibleLbl.TabIndex = 18;
-            comEligibleLbl.Text = "For Elite and Intermidiate only";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Window;
             ClientSize = new Size(876, 852);
-            Controls.Add(tabControl1);
+            Controls.Add(kbTabCtrl);
             Controls.Add(label1);
             Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(5);
             Name = "Form1";
             Text = "KickBlast Judo - Training Cost Calculator";
             Load += Form1_Load;
-            tabControl1.ResumeLayout(false);
+            kbTabCtrl.ResumeLayout(false);
             athleteTab.ResumeLayout(false);
             athleteTab.PerformLayout();
             groupBox1.ResumeLayout(false);
@@ -529,8 +564,8 @@
             ((System.ComponentModel.ISupportInitialize)prvtCoaHbx).EndInit();
             ((System.ComponentModel.ISupportInitialize)competitionBx).EndInit();
             ((System.ComponentModel.ISupportInitialize)weightBx).EndInit();
-            tabPage2.ResumeLayout(false);
-            tabPage2.PerformLayout();
+            costCalTab.ResumeLayout(false);
+            costCalTab.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             groupBox3.ResumeLayout(false);
@@ -542,9 +577,9 @@
         #endregion
 
         private Label label1;
-        private TabControl tabControl1;
+        private TabControl kbTabCtrl;
         private TabPage athleteTab;
-        private TabPage tabPage2;
+        private TabPage costCalTab;
         private ComboBox atheleteSelectCbx;
         private Label label16;
         private Button addAthleteBtn;
@@ -557,7 +592,7 @@
         private Label label5;
         private Label label4;
         private Label label3;
-        private ComboBox comboBox1;
+        private ComboBox costAthleteSlctCbx;
         private Label label2;
         private GroupBox groupBox2;
         private Label label15;
@@ -573,7 +608,7 @@
         private TextBox athleteNameTbx;
         private NumericUpDown prvtCoaHbx;
         private NumericUpDown competitionBx;
-        private ComboBox weightCatCbx;
+        private ComboBox comCatCbx;
         private ContextMenuStrip contextMenuStrip1;
         private Button athleteEditBtn;
         private Label competitionCostLbl;
@@ -581,5 +616,7 @@
         private Label privateCoatchLbl;
         private Label weightAnalysisLbl;
         private Label comEligibleLbl;
+        private Button calCostBtn;
+        private Button updateSaveBtn;
     }
 }
