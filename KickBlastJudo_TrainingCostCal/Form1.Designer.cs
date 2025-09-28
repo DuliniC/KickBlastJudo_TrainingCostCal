@@ -36,6 +36,7 @@
             label16 = new Label();
             addAthleteBtn = new Button();
             groupBox1 = new GroupBox();
+            cancelUpdtBtn = new Button();
             updateSaveBtn = new Button();
             calCostBtn = new Button();
             comEligibleLbl = new Label();
@@ -148,6 +149,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(cancelUpdtBtn);
             groupBox1.Controls.Add(updateSaveBtn);
             groupBox1.Controls.Add(calCostBtn);
             groupBox1.Controls.Add(comEligibleLbl);
@@ -174,6 +176,19 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Athlete Information";
             // 
+            // cancelUpdtBtn
+            // 
+            cancelUpdtBtn.BackColor = Color.LightCyan;
+            cancelUpdtBtn.Enabled = false;
+            cancelUpdtBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cancelUpdtBtn.Location = new Point(196, 455);
+            cancelUpdtBtn.Name = "cancelUpdtBtn";
+            cancelUpdtBtn.Size = new Size(152, 48);
+            cancelUpdtBtn.TabIndex = 21;
+            cancelUpdtBtn.Text = "Cancel";
+            cancelUpdtBtn.UseVisualStyleBackColor = false;
+            cancelUpdtBtn.Click += cancelUpdtBtn_Click;
+            // 
             // updateSaveBtn
             // 
             updateSaveBtn.BackColor = Color.LightSkyBlue;
@@ -190,7 +205,7 @@
             // 
             calCostBtn.BackColor = Color.Aquamarine;
             calCostBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            calCostBtn.Location = new Point(184, 454);
+            calCostBtn.Location = new Point(196, 454);
             calCostBtn.Name = "calCostBtn";
             calCostBtn.RightToLeft = RightToLeft.Yes;
             calCostBtn.Size = new Size(152, 49);
@@ -288,10 +303,10 @@
             // 
             // clearFormBtn
             // 
-            clearFormBtn.BackColor = Color.LightCyan;
+            clearFormBtn.BackColor = Color.Azure;
             clearFormBtn.Enabled = false;
             clearFormBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            clearFormBtn.Location = new Point(184, 455);
+            clearFormBtn.Location = new Point(368, 454);
             clearFormBtn.Name = "clearFormBtn";
             clearFormBtn.Size = new Size(146, 48);
             clearFormBtn.TabIndex = 7;
@@ -377,10 +392,10 @@
             costCalTab.Controls.Add(costAthleteSlctCbx);
             costCalTab.Controls.Add(label2);
             costCalTab.Controls.Add(groupBox2);
-            costCalTab.Location = new Point(4, 40);
+            costCalTab.Location = new Point(4, 29);
             costCalTab.Name = "costCalTab";
             costCalTab.Padding = new Padding(3);
-            costCalTab.Size = new Size(850, 667);
+            costCalTab.Size = new Size(850, 678);
             costCalTab.TabIndex = 1;
             costCalTab.Text = "Cost Calculator";
             costCalTab.UseVisualStyleBackColor = true;
@@ -617,5 +632,6 @@
         private Label comEligibleLbl;
         private Button calCostBtn;
         private Button updateSaveBtn;
+        private Button cancelUpdtBtn;
     }
 }

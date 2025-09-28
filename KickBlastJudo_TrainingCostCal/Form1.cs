@@ -1,12 +1,10 @@
-using System.Text.Json;
-
 namespace KickBlastJudo_TrainingCostCal
 {
     public partial class Form1 : Form
     {
         private readonly DatabaseManager _databaseManager;
-        private bool placeholderRemovedATab = false;
-        private bool placeholderRemovedCalTab = false;
+        //private bool placeholderRemovedATab = false;
+        //private bool placeholderRemovedCalTab = false;
 
         public Form1()
         {
@@ -18,8 +16,14 @@ namespace KickBlastJudo_TrainingCostCal
         {
             ClearAthleteForm();
             EnableAthleteFields();
+            athleteSaveBtn.Show();
+            clearFormBtn.Show();
+            athleteEditBtn.Hide();
+            calCostBtn.Hide();
+            updateSaveBtn.Hide();
             athleteSaveBtn.Enabled = true;
             clearFormBtn.Enabled = true;
+            cancelUpdtBtn.Enabled = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -34,7 +38,6 @@ namespace KickBlastJudo_TrainingCostCal
 
             var athlete = new Athlete
             {
-                AthleteID = 1,
                 AthleteName = athleteNameTbx.Text,
                 TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
                 CurrentWeightKg = weightBx.Value,
@@ -42,7 +45,20 @@ namespace KickBlastJudo_TrainingCostCal
                 PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
                 CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
             };
-            //SaveAthlete(athlete);
+            try
+            {
+                var result = _databaseManager.AddAthlete(athlete);
+                MessageBox.Show("New Athlete Added Successfully");
+                LoadAthletesIntoComboBox();               
+                ClearAthleteForm();
+                DisableAthleteFields();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("New Athlete Adding not Successfull. \nTry again.");
+                throw;
+            }
+            //atheleteSelectCbx.Enabled = true;      
         }
 
         private void ClearFormBtn_Click(object sender, EventArgs e)
@@ -63,7 +79,7 @@ namespace KickBlastJudo_TrainingCostCal
         }
         private void AtheleteSelectCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (atheleteSelectCbx.SelectedIndex > 0 && atheleteSelectCbx.SelectedItem is Athlete selectedAthlete)
+            if (/*atheleteSelectCbx.Text != "-- Select Athlete --" && */atheleteSelectCbx.SelectedItem is Athlete selectedAthlete)
             {
 
                 athleteNameTbx.Text = selectedAthlete.AthleteName;
@@ -78,22 +94,24 @@ namespace KickBlastJudo_TrainingCostCal
                 clearFormBtn.Hide();
                 updateSaveBtn.Hide();
                 calCostBtn.Show();
+                cancelUpdtBtn.Show();
+                DisableAthleteFields();
 
-                if (!placeholderRemovedATab)
-                {
-                    var athleteList = atheleteSelectCbx.DataSource as List<Athlete>;
-                    athleteList.RemoveAt(0);
+                //if (!placeholderRemovedATab)
+                //{
+                //    var athleteList = atheleteSelectCbx.DataSource as List<Athlete>;
+                //    athleteList.RemoveAt(0);
+                //    //List<Athlete> athleteList = _databaseManager.GetAllAthletes();
+                //    atheleteSelectCbx.DataSource = null;
+                //    atheleteSelectCbx.DataSource = athleteList;
 
-                    atheleteSelectCbx.DataSource = null;
-                    atheleteSelectCbx.DataSource = athleteList;
+                //    atheleteSelectCbx.DisplayMember = "AthleteName";
+                //    atheleteSelectCbx.ValueMember = "AthleteID";
 
-                    atheleteSelectCbx.DisplayMember = "AthleteName";
-                    atheleteSelectCbx.ValueMember = "AthleteID";
+                //    atheleteSelectCbx.SelectedItem = selectedAthlete;
 
-                    atheleteSelectCbx.SelectedItem = selectedAthlete;
-
-                    placeholderRemovedATab = true;
-                }
+                //    placeholderRemovedATab = true;
+                //}
             }
         }
         private void AthleteEditBtn_Click(object sender, EventArgs e)
@@ -101,8 +119,11 @@ namespace KickBlastJudo_TrainingCostCal
             EnableAthleteFields();
             competitionBx.Enabled = true;
             athleteEditBtn.Hide();
+            calCostBtn.Hide();
             atheleteSelectCbx.Enabled = false;
             updateSaveBtn.Show();
+            cancelUpdtBtn.Show();
+            cancelUpdtBtn.Enabled = true;
         }
 
         private void CalCostBtn_Click(object sender, EventArgs e)
@@ -115,28 +136,29 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void CostAthleteSlctCbx_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            if (costAthleteSlctCbx.SelectedIndex > 0 && costAthleteSlctCbx.SelectedItem is Athlete selectedAthlete)
+
+            if (costAthleteSlctCbx.SelectedItem is Athlete selectedAthlete)
             {
-                
-                if (!placeholderRemovedCalTab)
-                {
-                    var athleteList = costAthleteSlctCbx.DataSource as List<Athlete>;
-                    athleteList.RemoveAt(0);
 
-                    costAthleteSlctCbx.DataSource = null;
-                    costAthleteSlctCbx.DataSource = athleteList;
+                //if (!placeholderRemovedCalTab)
+                //{
+                //    var athleteList = costAthleteSlctCbx.DataSource as List<Athlete>;
+                //    athleteList.RemoveAt(0);
 
-                    costAthleteSlctCbx.DisplayMember = "AthleteName";
-                    costAthleteSlctCbx.ValueMember = "AthleteID";
+                //    costAthleteSlctCbx.DataSource = null;
+                //    costAthleteSlctCbx.DataSource = athleteList;
 
-                    costAthleteSlctCbx.SelectedItem = selectedAthlete;
+                //    costAthleteSlctCbx.DisplayMember = "AthleteName";
+                //    costAthleteSlctCbx.ValueMember = "AthleteID";
 
-                    placeholderRemovedCalTab = true;
-                }
+                //    costAthleteSlctCbx.SelectedItem = selectedAthlete;
+
+                //    placeholderRemovedCalTab = true;
+                //}
                 CalculateMonthlyStatement(selectedAthlete);
+
             }
-            
+
         }
 
         //Supporting Methods
@@ -159,27 +181,36 @@ namespace KickBlastJudo_TrainingCostCal
             prvtCoaHbx.Enabled = true;
         }
 
+        private void DisableAthleteFields()
+        {
+            athleteNameTbx.Enabled = false;
+            planCmbx.Enabled = false;
+            comCatCbx.Enabled = false;
+            weightBx.Enabled = false;
+            prvtCoaHbx.Enabled = false;
+            competitionBx.Enabled = false;
+        }
         private void LoadAthletesIntoComboBox()
         {
             try
             {
                 List<Athlete> athletes = _databaseManager.GetAllAthletes();
-                
-                var placeholderAthlete = new Athlete
-                {
-                    AthleteID = 0,
-                    AthleteName = "-- Select Athlete --"
-                };
+
+                //var placeholderAthlete = new Athlete
+                //{
+                //    AthleteID = 0,
+                //    AthleteName = "-- Select Athlete --"
+                //};
 
                 var listForAthleteTab = new List<Athlete>(athletes);
-                listForAthleteTab.Insert(0, placeholderAthlete);
+                //listForAthleteTab.Insert(0, placeholderAthlete);
 
                 atheleteSelectCbx.DataSource = listForAthleteTab;
                 atheleteSelectCbx.DisplayMember = "AthleteName";
                 atheleteSelectCbx.ValueMember = "AthleteID";
 
                 var listForCalTab = new List<Athlete>(athletes);
-                listForCalTab.Insert(0, placeholderAthlete);
+                //listForCalTab.Insert(0, placeholderAthlete);
 
                 costAthleteSlctCbx.DataSource = listForCalTab;
                 costAthleteSlctCbx.DisplayMember = "AthleteName";
@@ -250,6 +281,17 @@ namespace KickBlastJudo_TrainingCostCal
             }
         }
 
+        private void cancelUpdtBtn_Click(object sender, EventArgs e)
+        {
+            updateSaveBtn.Hide();
+            athleteEditBtn.Hide();
+            clearFormBtn.Hide();
+            //calCostBtn.Hide();
+            athleteSaveBtn.Hide();
+            cancelUpdtBtn.Hide();
+            atheleteSelectCbx.Enabled = true;
+            DisableAthleteFields();
+        }
     }
 
 }
