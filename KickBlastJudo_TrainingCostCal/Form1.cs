@@ -10,6 +10,14 @@ namespace KickBlastJudo_TrainingCostCal
             _databaseManager = new DatabaseManager();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LoadAthletesIntoComboBox();
+            planCmbx.DataSource = Enum.GetValues(typeof(TrainingPlan));
+            comCatCbx.DataSource = Enum.GetValues(typeof(WeightCategory));
+            _isDataLoaded = true;
+        }
+
         private void AddAthleteBtn_Click(object sender, EventArgs e)
         {
             ClearAthleteForm();
@@ -23,14 +31,6 @@ namespace KickBlastJudo_TrainingCostCal
             athleteSaveBtn.Enabled = true;
             clearFormBtn.Enabled = true;
             cancelUpdtBtn.Enabled = true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            LoadAthletesIntoComboBox();
-            planCmbx.DataSource = Enum.GetValues(typeof(TrainingPlan));
-            comCatCbx.DataSource = Enum.GetValues(typeof(WeightCategory));
-            _isDataLoaded = true;
         }
 
         private void AthleteSaveBtn_Click(object sender, EventArgs e)
@@ -69,6 +69,7 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void PlanCmbx_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Competition box Only Enable with Elite and Intemediate plans.
             if (planCmbx.SelectedIndex != 0)
             {
                 competitionBx.Enabled = true;
@@ -250,7 +251,7 @@ namespace KickBlastJudo_TrainingCostCal
                 costAthleteSlctCbx.ValueMember = "AthleteID";
 
                 costAthleteSlctCbx.SelectedIndex = -1;
-                costAthleteSlctCbx.Text = "-- Select Athlete";
+                costAthleteSlctCbx.Text = "-- Select Athlete --";
             }
             catch (Exception ex)
             {
@@ -324,27 +325,32 @@ namespace KickBlastJudo_TrainingCostCal
 
             if (string.IsNullOrWhiteSpace(athleteNameTbx.Text))
             {
-                validationErrors.Add("• Athlete Name cannot be empty.");
+                validationErrors.Add(" - Athlete Name cannot be empty.");
             }
 
             if (weightBx.Value <= 0)
             {
-                validationErrors.Add("• Current Weight must be greater than zero.");
+                validationErrors.Add(" - Current Weight must be greater than zero.");
             }
 
             if (prvtCoaHbx.Value > 5)
             {
-                validationErrors.Add("• Maximum private coaching hours is 5.");
+                validationErrors.Add(" - Maximum private coaching hours is 5.");
             }
 
             if (prvtCoaHbx.Value < 0)
             {
-                validationErrors.Add("• Private coaching hours cannot be negative.");
+                validationErrors.Add(" - Private coaching hours cannot be negative.");
+            }
+
+            if (planCmbx.SelectedIndex == 0 && competitionBx.Value > 0)
+            {
+                validationErrors.Add(" - Only Elite and Intermediate plans can enter into competitions")
             }
 
             if (competitionBx.Enabled && competitionBx.Value < 0)
             {
-                validationErrors.Add("• Competitions Entered cannot be a negative number.");
+                validationErrors.Add(" - Competitions Entered cannot be a negative number.");
             }
 
             if (validationErrors.Any())
