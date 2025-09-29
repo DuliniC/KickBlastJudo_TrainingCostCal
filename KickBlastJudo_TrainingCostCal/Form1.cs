@@ -345,7 +345,7 @@ namespace KickBlastJudo_TrainingCostCal
 
             if (planCmbx.SelectedIndex == 0 && competitionBx.Value > 0)
             {
-                validationErrors.Add(" - Only Elite and Intermediate plans can enter into competitions")
+                validationErrors.Add(" - Only Elite and Intermediate plans can enter into competitions");
             }
 
             if (competitionBx.Enabled && competitionBx.Value < 0)
