@@ -44,7 +44,7 @@ namespace KickBlastJudo_TrainingCostCal
                 var athlete = new Athlete
                 {
                     AthleteName = athleteNameTbx.Text,
-                    TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
+                    TrainingPlan = (TrainingPlan)planCmbx.SelectedItem,
                     CurrentWeightKg = weightBx.Value,
                     CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem,
                     PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
@@ -53,7 +53,7 @@ namespace KickBlastJudo_TrainingCostCal
                 try
                 {
                     var result = _databaseManager.AddAthlete(athlete);
-                    MessageBox.Show("New Athlete Added Successfully", "Success", MessageBoxButtons.OK);
+                    MessageBox.Show("New Athlete Added Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadAthletesIntoComboBox();
                     ClearAthleteForm();
                     DisableAthleteFields();
@@ -74,13 +74,16 @@ namespace KickBlastJudo_TrainingCostCal
         private void PlanCmbx_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Competition box Only Enable with Elite and Intemediate plans.
-            if (planCmbx.SelectedIndex != 0)
+            if (planCmbx.SelectedItem is TrainingPlan selectedPlan)
             {
-                competitionBx.Enabled = true;
-            }
-            else
-            {
-                competitionBx.Enabled = false;
+                if (selectedPlan.PlanName != "Beginner")
+                {
+                    competitionBx.Enabled = true;
+                }
+                else
+                {
+                    competitionBx.Enabled = false;
+                }
             }
         }
         private void AtheleteSelectCbx_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,8 +97,8 @@ namespace KickBlastJudo_TrainingCostCal
             {
 
                 athleteNameTbx.Text = selectedAthlete.AthleteName;
-                planCmbx.SelectedItem = selectedAthlete.TrainingPlan;
-                comCatCbx.SelectedItem = selectedAthlete.CompetitionCategory;
+                planCmbx.SelectedValue = selectedAthlete.TrainingPlan.PlanID;
+                comCatCbx.SelectedValue = selectedAthlete.CompetitionCategory.CategoryID;
                 weightBx.Value = selectedAthlete.CurrentWeightKg;
                 competitionBx.Value = selectedAthlete.CompetitionEntered;
                 competitionBx.Enabled = false;
@@ -113,13 +116,25 @@ namespace KickBlastJudo_TrainingCostCal
         private void AthleteEditBtn_Click(object sender, EventArgs e)
         {
             EnableAthleteFields();
-            competitionBx.Enabled = true;
+            //competitionBx.Enabled = true;
             athleteEditBtn.Hide();
             calCostBtn.Hide();
             atheleteSelectCbx.Enabled = false;
             updateSaveBtn.Show();
             cancelUpdtBtn.Show();
             cancelUpdtBtn.Enabled = true;
+
+            if (planCmbx.SelectedItem is TrainingPlan selectedPlan)
+            {
+                if (selectedPlan.PlanName != "Beginner")
+                {
+                    competitionBx.Enabled = true;
+                }
+                else
+                {
+                    competitionBx.Enabled = false;
+                }
+            }
         }
 
         private void CalCostBtn_Click(object sender, EventArgs e)
@@ -164,7 +179,7 @@ namespace KickBlastJudo_TrainingCostCal
                     try
                     {
                         selectedAthlete.AthleteName = athleteNameTbx.Text;
-                        selectedAthlete.TrainingPlan = (TrainingPlan)planCmbx.SelectedValue;
+                        selectedAthlete.TrainingPlan = (TrainingPlan)planCmbx.SelectedItem;
                         selectedAthlete.CurrentWeightKg = weightBx.Value;
                         selectedAthlete.CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem;
                         selectedAthlete.PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value);
@@ -240,7 +255,7 @@ namespace KickBlastJudo_TrainingCostCal
 
 
             planCmbx.DataSource = trainingPlans;
-            planCmbx.DisplayMember = "DisplayText";
+            planCmbx.DisplayMember = "PlanName";
             planCmbx.ValueMember = "PlanID";
 
             _weightCategories = _databaseManager.GetWeightCategories();

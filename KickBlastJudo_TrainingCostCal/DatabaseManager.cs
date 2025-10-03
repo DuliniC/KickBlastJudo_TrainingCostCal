@@ -82,9 +82,9 @@ namespace KickBlastJudo_TrainingCostCal
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@AthleteName", athlete.AthleteName);
-                        command.Parameters.AddWithValue("@TrainingPlan", athlete.TrainingPlan);
+                        command.Parameters.AddWithValue("@TrainingPlan", athlete.TrainingPlan.PlanID);
                         command.Parameters.AddWithValue("@CurrentWeightKg", athlete.CurrentWeightKg);
-                        command.Parameters.AddWithValue("@CompetitionCategory", athlete.CompetitionCategory);
+                        command.Parameters.AddWithValue("@CompetitionCategory", athlete.CompetitionCategory.CategoryID);
                         command.Parameters.AddWithValue("@CompetitionEntered", athlete.CompetitionEntered);
                         command.Parameters.AddWithValue("@PrivateCoachingHours", athlete.PrivateCoachingHours);
 
@@ -125,9 +125,9 @@ namespace KickBlastJudo_TrainingCostCal
                 using (var command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@AthleteName", athleteToUpdate.AthleteName);
-                    command.Parameters.AddWithValue("@TrainingPlan", athleteToUpdate.TrainingPlan);
+                    command.Parameters.AddWithValue("@TrainingPlan", athleteToUpdate.TrainingPlan.PlanID);
                     command.Parameters.AddWithValue("@CurrentWeightKg", athleteToUpdate.CurrentWeightKg);
-                    command.Parameters.AddWithValue("@CompetitionCategory", athleteToUpdate.CompetitionCategory);
+                    command.Parameters.AddWithValue("@CompetitionCategory", athleteToUpdate.CompetitionCategory.CategoryID);
                     command.Parameters.AddWithValue("@CompetitionEntered", athleteToUpdate.CompetitionEntered);
                     command.Parameters.AddWithValue("@PrivateCoachingHours", athleteToUpdate.PrivateCoachingHours);
                     command.Parameters.AddWithValue("@AthleteID", athleteToUpdate.AthleteID); // Used in the WHERE clause
