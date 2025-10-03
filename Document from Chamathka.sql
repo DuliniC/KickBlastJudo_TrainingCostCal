@@ -117,3 +117,32 @@ VALUES
     -- Athlete 6: A new beginner with no extra coaching
     ('Nimali Fernando', 1, 65.0, 2, 0, 0);
 GO
+
+IF OBJECT_ID('dbo.Fees', 'U') IS NOT NULL
+    DROP TABLE dbo.TrainingPlans;
+GO
+
+CREATE TABLE dbo.Fees (
+    FeeId INT PRIMARY KEY IDENTITY(1,1),
+    FeeType VARCHAR(50) NOT NULL,
+    Amount DECIMAL(10,2) NOT NULL
+);
+GO
+
+INSERT INTO dbo.Fees (FeeType, Amount)
+VALUES ('PrivateCoatchingFee', 90.50);
+
+INSERT INTO dbo.Fees (FeeType, Amount)
+VALUES ('CompetitionFee', 220.00);
+GO
+
+
+CREATE TABLE dbo.MonthlyCosts (
+    MonthlyCostId INT PRIMARY KEY IDENTITY(1,1),
+    GeneratedDate DATETIME NOT NULL,
+    AthleteName VARCHAR(100) NOT NULL,
+    TrainingCost DECIMAL(10,2) NOT NULL,
+    CompetitionCost DECIMAL(10,2) NOT NULL,
+    PrivateCoachingCost DECIMAL(10,2) NOT NULL,
+    TotalCost DECIMAL(10,2) NOT NULL
+);
