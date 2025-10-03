@@ -10,9 +10,9 @@ namespace KickBlastJudo_TrainingCostCal.Database
     {
         public int AthleteID { get; init; }
         public string AthleteName { get; set; }
-        public int TrainingPlan { get; set; }
+        public TrainingPlan TrainingPlan { get; set; }
         public decimal CurrentWeightKg { get; set; }
-        public int CompetitionCategory { get; set; }
+        public WeightCategory CompetitionCategory { get; set; }
         public int CompetitionEntered { get; set; }
         public int PrivateCoachingHours { get; set; }
 

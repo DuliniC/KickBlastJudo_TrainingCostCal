@@ -9,9 +9,6 @@ namespace KickBlastJudo_TrainingCostCal
 {
     public class CostCalculator
     {
-        const decimal beginnerTrainingFee = 2500.00m; //per month
-        const decimal intermidiateTrainingFee = 3000.00m; // per month
-        const decimal eliteTrainingFee = 3500.00m; //per month
         const decimal competitionFee = 250.00m; //per competition
         const decimal privateTutionFee = 150.00m; // per hour
 
@@ -23,19 +20,11 @@ namespace KickBlastJudo_TrainingCostCal
         }
         public decimal GetTrainingCost()
         {
-            switch (_athlete.TrainingPlan)
+            if(_athlete.TrainingPlan == null)
             {
-                case 1:
-                    return beginnerTrainingFee;
-
-                case 2:
-                    return intermidiateTrainingFee;
-
-                case 3:
-                    return eliteTrainingFee;
-                default:
-                    return 0.00m;
+                return _athlete.TrainingPlan.WeeklyFee * _athlete.TrainingPlan.SessionsPerWeek;
             }
+            return 0.00m;
         }
 
         public decimal GetCompetitionCost()

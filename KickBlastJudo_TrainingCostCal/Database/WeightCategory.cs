@@ -12,6 +12,14 @@ namespace KickBlastJudo_TrainingCostCal.Database
         public string CategoryName { get; set; }
         public decimal? UpperWeightLimit { get; set; }
         public string Description { get; set; }
-        public int DisplayOrder {  get; set; }  
+        public int DisplayOrder {  get; set; }
+
+        public string DisplayText
+        {
+            get
+            {
+                return $"{CategoryName} - {Description}";
+            }
+        }
     }
 }

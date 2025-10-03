@@ -21,6 +21,8 @@ namespace KickBlastJudo_TrainingCostCal
         {
             var athletes = new List<Athlete>();
             const string sql = "SELECT AthleteID, AthleteName, TrainingPlan, CurrentWeightKg, CompetitionCategory, CompetitionEntered, PrivateCoachingHours FROM Athletes;";
+            var plans = GetTrainingPlans();
+            var weightCategories = GetWeightCategories();
 
             try
             {
@@ -33,13 +35,19 @@ namespace KickBlastJudo_TrainingCostCal
                         {
                             while (reader.Read())
                             {
+                                int planId = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
+                                var plan = plans.FirstOrDefault(p => p.PlanID == planId);
+
+                                int weightCategoryId = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
+                                var weightCategory = weightCategories.FirstOrDefault(w => w.CategoryID == weightCategoryId);
+                                
                                 var athlete = new Athlete
                                 {
                                     AthleteID = reader.GetInt32(reader.GetOrdinal("AthleteID")),
                                     AthleteName = reader.GetString(reader.GetOrdinal("AthleteName")),
-                                    TrainingPlan = reader.GetInt32(reader.GetOrdinal("TrainingPlan")),
+                                    TrainingPlan = plan,
                                     CurrentWeightKg = reader.GetDecimal(reader.GetOrdinal("CurrentWeightKg")),
-                                    CompetitionCategory = reader.GetInt32(reader.GetOrdinal("CompetitionCategory")),
+                                    CompetitionCategory = weightCategory,
                                     CompetitionEntered = reader.GetInt32(reader.GetOrdinal("CompetitionEntered")),
                                     PrivateCoachingHours = reader.GetInt32(reader.GetOrdinal("PrivateCoachingHours"))
                                 };
@@ -74,9 +82,9 @@ namespace KickBlastJudo_TrainingCostCal
                     using (var command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@AthleteName", athlete.AthleteName);
-                        command.Parameters.AddWithValue("@TrainingPlan", athlete.TrainingPlan.ToString());
+                        command.Parameters.AddWithValue("@TrainingPlan", athlete.TrainingPlan);
                         command.Parameters.AddWithValue("@CurrentWeightKg", athlete.CurrentWeightKg);
-                        command.Parameters.AddWithValue("@CompetitionCategory", athlete.CompetitionCategory.ToString());
+                        command.Parameters.AddWithValue("@CompetitionCategory", athlete.CompetitionCategory);
                         command.Parameters.AddWithValue("@CompetitionEntered", athlete.CompetitionEntered);
                         command.Parameters.AddWithValue("@PrivateCoachingHours", athlete.PrivateCoachingHours);
 

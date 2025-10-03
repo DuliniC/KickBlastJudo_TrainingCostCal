@@ -43,9 +43,9 @@ namespace KickBlastJudo_TrainingCostCal
                 var athlete = new Athlete
                 {
                     AthleteName = athleteNameTbx.Text,
-                    TrainingPlan = Convert.ToInt32(planCmbx.SelectedValue),
+                    TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
                     CurrentWeightKg = weightBx.Value,
-                    CompetitionCategory = Convert.ToInt32(comCatCbx.SelectedItem),
+                    CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem,
                     PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
                     CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
                 };
@@ -163,9 +163,9 @@ namespace KickBlastJudo_TrainingCostCal
                     try
                     {
                         selectedAthlete.AthleteName = athleteNameTbx.Text;
-                        selectedAthlete.TrainingPlan = Convert.ToInt32(planCmbx.SelectedValue);
+                        selectedAthlete.TrainingPlan = (TrainingPlan)planCmbx.SelectedValue;
                         selectedAthlete.CurrentWeightKg = weightBx.Value;
-                        selectedAthlete.CompetitionCategory = Convert.ToInt32(comCatCbx.SelectedItem);
+                        selectedAthlete.CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem;
                         selectedAthlete.PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value);
                         selectedAthlete.CompetitionEntered = competitionBx.Enabled ? Convert.ToInt32(competitionBx.Value) : 0;
 
@@ -235,16 +235,17 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void LoadDataFromDatabase()
         {
-            var traingPlans = _databaseManager.GetTrainingPlans();
+            var trainingPlans = _databaseManager.GetTrainingPlans();
 
-            planCmbx.DataSource = traingPlans;
-            planCmbx.DisplayMember = "PlanName";
+            
+            planCmbx.DataSource = trainingPlans;
+            planCmbx.DisplayMember = "DisplayText";
             planCmbx.ValueMember = "PlanID";
 
             _weightCategories = _databaseManager.GetWeightCategories();
 
             comCatCbx.DataSource = _weightCategories;
-            comCatCbx.DisplayMember = "CategoryName";
+            comCatCbx.DisplayMember = "DisplayText";
             comCatCbx.ValueMember = "CategoryID";
 
         }
@@ -280,13 +281,13 @@ namespace KickBlastJudo_TrainingCostCal
         {
             var costCal = new CostCalculator(selectedAthlete);
 
-            trainingCostLbl.Text = costCal.GetTrainingCost().ToString();
+            trainingCostLbl.Text =  $"{selectedAthlete.TrainingPlan.WeeklyFee * selectedAthlete.TrainingPlan.SessionsPerWeek * 4} " +
+                                    $"= {costCal.GetTrainingCost().ToString()}";
             competitionCostLbl.Text = costCal.GetCompetitionCost().ToString();
             privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
             totalCostLbl.Text = costCal.GetTotalCost().ToString();
 
-            var athleteCategory = _weightCategories.Where(x => x.CategoryID == selectedAthlete.CompetitionCategory).FirstOrDefault();
-            weightAnalysisLbl.Text = GetWeightAnalysis(athleteCategory,
+            weightAnalysisLbl.Text = GetWeightAnalysis(selectedAthlete.CompetitionCategory,
                                                             selectedAthlete.CurrentWeightKg);
         }
 

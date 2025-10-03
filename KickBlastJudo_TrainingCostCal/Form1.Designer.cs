@@ -89,7 +89,7 @@
             label1.Font = new Font("Sans Serif Collection", 19.7999973F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.Location = new Point(12, 31);
             label1.Name = "label1";
-            label1.Size = new Size(274, 112);
+            label1.Size = new Size(422, 82);
             label1.TabIndex = 1;
             label1.Text = "KickBlast Judo";
             // 
@@ -267,7 +267,7 @@
             comCatCbx.FormattingEnabled = true;
             comCatCbx.Location = new Point(373, 231);
             comCatCbx.Name = "comCatCbx";
-            comCatCbx.Size = new Size(295, 36);
+            comCatCbx.Size = new Size(419, 36);
             comCatCbx.TabIndex = 14;
             // 
             // weightBx
