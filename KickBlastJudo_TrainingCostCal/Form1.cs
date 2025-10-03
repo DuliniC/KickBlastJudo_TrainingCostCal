@@ -1,9 +1,13 @@
+using KickBlastJudo_TrainingCostCal.Database;
+
 namespace KickBlastJudo_TrainingCostCal
 {
     public partial class Form1 : Form
     {
         private readonly DatabaseManager _databaseManager;
         private bool _isDataLoaded = false;
+        private List<WeightCategory> _weightCategories;
+
         public Form1()
         {
             InitializeComponent();
@@ -12,9 +16,8 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            LoadDataFromDatabase();
             LoadAthletesIntoComboBox();
-            planCmbx.DataSource = Enum.GetValues(typeof(TrainingPlan));
-            comCatCbx.DataSource = Enum.GetValues(typeof(WeightCategory));
             _isDataLoaded = true;
         }
 
@@ -40,9 +43,9 @@ namespace KickBlastJudo_TrainingCostCal
                 var athlete = new Athlete
                 {
                     AthleteName = athleteNameTbx.Text,
-                    TrainingPlan = (TrainingPlan)planCmbx.SelectedValue,
+                    TrainingPlan = Convert.ToInt32(planCmbx.SelectedValue),
                     CurrentWeightKg = weightBx.Value,
-                    CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem,
+                    CompetitionCategory = Convert.ToInt32(comCatCbx.SelectedItem),
                     PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value),
                     CompetitionEntered = competitionBx.Enabled == true ? Convert.ToInt32(competitionBx.Value) : 0
                 };
@@ -160,9 +163,9 @@ namespace KickBlastJudo_TrainingCostCal
                     try
                     {
                         selectedAthlete.AthleteName = athleteNameTbx.Text;
-                        selectedAthlete.TrainingPlan = (TrainingPlan)planCmbx.SelectedValue;
+                        selectedAthlete.TrainingPlan = Convert.ToInt32(planCmbx.SelectedValue);
                         selectedAthlete.CurrentWeightKg = weightBx.Value;
-                        selectedAthlete.CompetitionCategory = (WeightCategory)comCatCbx.SelectedItem;
+                        selectedAthlete.CompetitionCategory = Convert.ToInt32(comCatCbx.SelectedItem);
                         selectedAthlete.PrivateCoachingHours = Convert.ToInt32(prvtCoaHbx.Value);
                         selectedAthlete.CompetitionEntered = competitionBx.Enabled ? Convert.ToInt32(competitionBx.Value) : 0;
 
@@ -230,6 +233,21 @@ namespace KickBlastJudo_TrainingCostCal
             competitionBx.Enabled = false;
         }
 
+        private void LoadDataFromDatabase()
+        {
+            var traingPlans = _databaseManager.GetTrainingPlans();
+
+            planCmbx.DataSource = traingPlans;
+            planCmbx.DisplayMember = "PlanName";
+            planCmbx.ValueMember = "PlanID";
+
+            _weightCategories = _databaseManager.GetWeightCategories();
+
+            comCatCbx.DataSource = _weightCategories;
+            comCatCbx.DisplayMember = "CategoryName";
+            comCatCbx.ValueMember = "CategoryID";
+
+        }
         private void LoadAthletesIntoComboBox()
         {
             try
@@ -258,7 +276,6 @@ namespace KickBlastJudo_TrainingCostCal
                 MessageBox.Show("Failed to load athletes", "Error", MessageBoxButtons.OK);
             }
         }
-
         private void CalculateMonthlyStatement(Athlete selectedAthlete)
         {
             var costCal = new CostCalculator(selectedAthlete);
@@ -268,55 +285,30 @@ namespace KickBlastJudo_TrainingCostCal
             privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
             totalCostLbl.Text = costCal.GetTotalCost().ToString();
 
-            weightAnalysisLbl.Text = GetWeightAnalysis(selectedAthlete.CompetitionCategory,
+            var athleteCategory = _weightCategories.Where(x => x.CategoryID == selectedAthlete.CompetitionCategory).FirstOrDefault();
+            weightAnalysisLbl.Text = GetWeightAnalysis(athleteCategory,
                                                             selectedAthlete.CurrentWeightKg);
         }
 
-        private string GetWeightAnalysis(WeightCategory weightCategory, decimal weight)
+        private string GetWeightAnalysis(WeightCategory weightCategory, decimal currentWeight)
         {
-            var upperLimit = 200m;
-            var lowerLimit = 0m;
-            switch (weightCategory)
-            {
-                case WeightCategory.Heavyweight:
-                    lowerLimit = 100.1m;
-                    break;
-                case WeightCategory.Light_Heavyweight:
-                    upperLimit = 100m;
-                    lowerLimit = 90.1m;
-                    break;
-                case WeightCategory.Middleweight:
-                    upperLimit = 90m;
-                    lowerLimit = 81.1m;
-                    break;
-                case WeightCategory.Light_Middleweight:
-                    upperLimit = 81m;
-                    lowerLimit = 73.1m;
-                    break;
-                case WeightCategory.Lightweight:
-                    upperLimit = 73m;
-                    lowerLimit = 60.1m;
-                    break;
-                case WeightCategory.Flyweight:
-                    upperLimit = 60m;
-                    break;
-                default:
-                    break;
-            }
+            decimal lowerLimit = 0;
+            var orderIndex = weightCategory.DisplayOrder;
 
-            if (weight > upperLimit)
+            if (orderIndex > 1)
             {
-                return "Above Category Weight";
+                var prevoiusCatUpperLimit = _weightCategories.Where(c => c.DisplayOrder == orderIndex - 1).FirstOrDefault();
+                lowerLimit = prevoiusCatUpperLimit.UpperWeightLimit.Value;
+
+                if (currentWeight < lowerLimit) {
+                    return "Underweight";
+                } 
+                else if (weightCategory.UpperWeightLimit.HasValue && currentWeight > weightCategory.UpperWeightLimit.Value) {
+                    return "Overweight";
+                }           
             }
-            else if (weight < lowerLimit)
-            {
-                return "Below Category Weight";
-            }
-            else
-            {
-                return "At Correct Weight";
-            }
-        }
+            return "Correct Category";
+        } 
 
         // Validations
         private bool ValidateAthleteInputs()

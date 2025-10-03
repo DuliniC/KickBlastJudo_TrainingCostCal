@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KickBlastJudo_TrainingCostCal.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,13 +25,13 @@ namespace KickBlastJudo_TrainingCostCal
         {
             switch (_athlete.TrainingPlan)
             {
-                case TrainingPlan.Beginner:
+                case 1:
                     return beginnerTrainingFee;
 
-                case TrainingPlan.Intermediate:
+                case 2:
                     return intermidiateTrainingFee;
 
-                case TrainingPlan.Elite:
+                case 3:
                     return eliteTrainingFee;
                 default:
                     return 0.00m;

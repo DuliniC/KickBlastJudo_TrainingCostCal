@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using KickBlastJudo_TrainingCostCal.Database;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,9 +37,9 @@ namespace KickBlastJudo_TrainingCostCal
                                 {
                                     AthleteID = reader.GetInt32(reader.GetOrdinal("AthleteID")),
                                     AthleteName = reader.GetString(reader.GetOrdinal("AthleteName")),
-                                    TrainingPlan = (TrainingPlan)Enum.Parse(typeof(TrainingPlan), reader.GetString(reader.GetOrdinal("TrainingPlan"))),
+                                    TrainingPlan = reader.GetInt32(reader.GetOrdinal("TrainingPlan")),
                                     CurrentWeightKg = reader.GetDecimal(reader.GetOrdinal("CurrentWeightKg")),
-                                    CompetitionCategory = (WeightCategory)Enum.Parse(typeof(WeightCategory), reader.GetString(reader.GetOrdinal("CompetitionCategory"))),
+                                    CompetitionCategory = reader.GetInt32(reader.GetOrdinal("CompetitionCategory")),
                                     CompetitionEntered = reader.GetInt32(reader.GetOrdinal("CompetitionEntered")),
                                     PrivateCoachingHours = reader.GetInt32(reader.GetOrdinal("PrivateCoachingHours"))
                                 };
@@ -116,9 +117,9 @@ namespace KickBlastJudo_TrainingCostCal
                 using (var command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@AthleteName", athleteToUpdate.AthleteName);
-                    command.Parameters.AddWithValue("@TrainingPlan", (int)athleteToUpdate.TrainingPlan);
+                    command.Parameters.AddWithValue("@TrainingPlan", athleteToUpdate.TrainingPlan);
                     command.Parameters.AddWithValue("@CurrentWeightKg", athleteToUpdate.CurrentWeightKg);
-                    command.Parameters.AddWithValue("@CompetitionCategory", (int)athleteToUpdate.CompetitionCategory);
+                    command.Parameters.AddWithValue("@CompetitionCategory", athleteToUpdate.CompetitionCategory);
                     command.Parameters.AddWithValue("@CompetitionEntered", athleteToUpdate.CompetitionEntered);
                     command.Parameters.AddWithValue("@PrivateCoachingHours", athleteToUpdate.PrivateCoachingHours);
                     command.Parameters.AddWithValue("@AthleteID", athleteToUpdate.AthleteID); // Used in the WHERE clause
@@ -134,5 +135,68 @@ namespace KickBlastJudo_TrainingCostCal
             }
         }
 
+        public List<TrainingPlan> GetTrainingPlans()
+        {
+            var plans = new List<TrainingPlan>();
+            string sql = "SELECT PlanID, PlanName, SessionsPerWeek, WeeklyFee, CanEnterCompetitions FROM TrainingPlans";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var plan = new TrainingPlan
+                        {
+                            PlanID = reader.GetInt32(0),
+                            PlanName = reader.GetString(1),
+                            SessionsPerWeek = reader.GetInt32(2),
+                            WeeklyFee = reader.GetDecimal(3),
+                            CanEnterCompetitions = reader.GetBoolean(4)
+                        };
+                        plans.Add(plan);
+                    }
+                }
+                return plans;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        public List<WeightCategory> GetWeightCategories()
+        {
+            var categories = new List<WeightCategory>();
+            string sql = "SELECT CategoryID, CategoryName, UpperWeightLimit, Description, DisplayOrder FROM WeightCategories";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    categories.Add(new WeightCategory
+                    {
+                        CategoryID = reader.GetInt32(0),
+                        CategoryName = reader.GetString(1),
+                        UpperWeightLimit = reader.IsDBNull(2) ? (decimal?)null : reader.GetDecimal(2),
+                        Description = reader.GetString(3),
+                        DisplayOrder = reader.GetInt32(4)
+                    });
+                }
+            }
+            return categories;
+        }
     }
 }
