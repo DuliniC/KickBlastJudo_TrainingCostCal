@@ -286,14 +286,20 @@ namespace KickBlastJudo_TrainingCostCal
 
             var costCal = new CostCalculator(selectedAthlete, feeLookup);
 
+            var monthlyCost = costCal.FindMonthlyCost();
+
             trainingCostLbl.Text = $"{selectedAthlete.TrainingPlan.WeeklyFee} * " +
-                $"{selectedAthlete.TrainingPlan.SessionsPerWeek} * 4 = {costCal.GetTrainingCost().ToString()}";
-            competitionCostLbl.Text = $"{selectedAthlete.CompetitionEntered} * {feeLookup["CompetitionFee"]} = {costCal.GetCompetitionCost().ToString()}";
-            privateCoachLbl.Text = $"{selectedAthlete.PrivateCoachingHours} * {feeLookup["PrivateCoatchingFee"]} = {costCal.GetPrivateTutionCost()}";
-            totalCostLbl.Text = costCal.GetTotalCost().ToString();
+                $"{selectedAthlete.TrainingPlan.SessionsPerWeek} * 4 = {monthlyCost.TrainingCost}";
+            competitionCostLbl.Text = $"{selectedAthlete.CompetitionEntered} * {feeLookup["CompetitionFee"]} " +
+                $"= {monthlyCost.CompetitionCost}";
+            privateCoachLbl.Text = $"{selectedAthlete.PrivateCoachingHours} * {feeLookup["PrivateCoatchingFee"]} " +
+                $"= {monthlyCost.PrivateCoachingCost}";
+            totalCostLbl.Text = monthlyCost.TotalCost.ToString();
 
             weightAnalysisLbl.Text = GetWeightAnalysis(selectedAthlete.CompetitionCategory,
                                                             selectedAthlete.CurrentWeightKg);
+            _databaseManager.SaveMonthlyCost(monthlyCost);
+
         }
 
         private string GetWeightAnalysis(WeightCategory weightCategory, decimal currentWeight)
