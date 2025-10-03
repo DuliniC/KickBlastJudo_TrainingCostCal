@@ -18,6 +18,20 @@ namespace KickBlastJudo_TrainingCostCal
             _athlete = athlete;
             _feeLookup = feeLookup;
         }
+
+        public MonthlyCost FindMonthlyCost()
+        {
+            var monthlyCost = new MonthlyCost()
+            {
+                AthleteName = _athlete.AthleteName,
+                TrainingCost = GetTrainingCost(),
+                CompetitionCost = GetCompetitionCost(),
+                PrivateCoachingCost = GetPrivateTutionCost(),
+                TotalCost = GetTotalCost()
+            };
+            
+            return monthlyCost;
+        } 
         public decimal GetTrainingCost()
         {
             if(_athlete.TrainingPlan != null)

@@ -230,5 +230,27 @@ namespace KickBlastJudo_TrainingCostCal
             }
             return fees;
         }
+
+        public void SaveMonthlyCost(MonthlyCost cost)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"INSERT INTO MonthlyCosts 
+                           (GeneratedDate, AthleteName, TrainingCost, CompetitionCost, PrivateCoachingCost, TotalCost) 
+                           VALUES (@GeneratedDate, @AthleteName, @TrainingCost, @CompetitionCost, @PrivateCoachingCost, @TotalCost)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@GeneratedDate", DateTime.Now);  // set now
+                cmd.Parameters.AddWithValue("@AthleteName", cost.AthleteName);
+                cmd.Parameters.AddWithValue("@TrainingCost", cost.TrainingCost);
+                cmd.Parameters.AddWithValue("@CompetitionCost", cost.CompetitionCost);
+                cmd.Parameters.AddWithValue("@PrivateCoachingCost", cost.PrivateCoachingCost);
+                cmd.Parameters.AddWithValue("@TotalCost", cost.TotalCost);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
