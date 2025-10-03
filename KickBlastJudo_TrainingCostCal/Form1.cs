@@ -7,6 +7,7 @@ namespace KickBlastJudo_TrainingCostCal
         private readonly DatabaseManager _databaseManager;
         private bool _isDataLoaded = false;
         private List<WeightCategory> _weightCategories;
+        private List<Fee> _fees;
 
         public Form1()
         {
@@ -118,7 +119,7 @@ namespace KickBlastJudo_TrainingCostCal
             atheleteSelectCbx.Enabled = false;
             updateSaveBtn.Show();
             cancelUpdtBtn.Show();
-            cancelUpdtBtn.Enabled = true;            
+            cancelUpdtBtn.Enabled = true;
         }
 
         private void CalCostBtn_Click(object sender, EventArgs e)
@@ -207,9 +208,9 @@ namespace KickBlastJudo_TrainingCostCal
 
         private void ClearCostCalValues()
         {
-            trainingCostLbl.Text = "0.00";
-            competitionCostLbl.Text = "0.00";
-            privateCoatchLbl.Text = "0.00";
+            trainingCostLbl.Text = "Fee for Plan * Sessions per Week * Weeks per month";
+            competitionCostLbl.Text = "Competitions Entered * Competition Fee";
+            privateCoachLbl.Text = "Private Coaching Hours * Private Coaching Fee";
             totalCostLbl.Text = "0.00";
             weightAnalysisLbl.Text = string.Empty;
         }
@@ -237,7 +238,7 @@ namespace KickBlastJudo_TrainingCostCal
         {
             var trainingPlans = _databaseManager.GetTrainingPlans();
 
-            
+
             planCmbx.DataSource = trainingPlans;
             planCmbx.DisplayMember = "DisplayText";
             planCmbx.ValueMember = "PlanID";
@@ -247,6 +248,8 @@ namespace KickBlastJudo_TrainingCostCal
             comCatCbx.DataSource = _weightCategories;
             comCatCbx.DisplayMember = "DisplayText";
             comCatCbx.ValueMember = "CategoryID";
+
+            _fees = _databaseManager.GetFees();
 
         }
         private void LoadAthletesIntoComboBox()
@@ -279,11 +282,14 @@ namespace KickBlastJudo_TrainingCostCal
         }
         private void CalculateMonthlyStatement(Athlete selectedAthlete)
         {
-            var costCal = new CostCalculator(selectedAthlete);
+            var feeLookup = _fees.ToDictionary(f => f.FeeType, f => f.Amount);
 
-            trainingCostLbl.Text = $"{selectedAthlete.TrainingPlan.WeeklyFee * selectedAthlete.TrainingPlan.SessionsPerWeek * 4} ";
-            competitionCostLbl.Text = costCal.GetCompetitionCost().ToString();
-            privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
+            var costCal = new CostCalculator(selectedAthlete, feeLookup);
+
+            trainingCostLbl.Text = $"{selectedAthlete.TrainingPlan.WeeklyFee} * " +
+                $"{selectedAthlete.TrainingPlan.SessionsPerWeek} * 4 = {costCal.GetTrainingCost().ToString()}";
+            competitionCostLbl.Text = $"{selectedAthlete.CompetitionEntered} * {feeLookup["CompetitionFee"]} = {costCal.GetCompetitionCost().ToString()}";
+            privateCoachLbl.Text = $"{selectedAthlete.PrivateCoachingHours} * {feeLookup["PrivateCoatchingFee"]} = {costCal.GetPrivateTutionCost()}";
             totalCostLbl.Text = costCal.GetTotalCost().ToString();
 
             weightAnalysisLbl.Text = GetWeightAnalysis(selectedAthlete.CompetitionCategory,
@@ -300,15 +306,17 @@ namespace KickBlastJudo_TrainingCostCal
                 var prevoiusCatUpperLimit = _weightCategories.Where(c => c.DisplayOrder == orderIndex - 1).FirstOrDefault();
                 lowerLimit = prevoiusCatUpperLimit.UpperWeightLimit.Value;
 
-                if (currentWeight < lowerLimit) {
+                if (currentWeight < lowerLimit)
+                {
                     return "Underweight";
-                } 
-                else if (weightCategory.UpperWeightLimit.HasValue && currentWeight > weightCategory.UpperWeightLimit.Value) {
+                }
+                else if (weightCategory.UpperWeightLimit.HasValue && currentWeight > weightCategory.UpperWeightLimit.Value)
+                {
                     return "Overweight";
-                }           
+                }
             }
             return "Correct Category";
-        } 
+        }
 
         // Validations
         private bool ValidateAthleteInputs()
@@ -357,7 +365,6 @@ namespace KickBlastJudo_TrainingCostCal
             return true;
         }
 
-        
     }
 
 }

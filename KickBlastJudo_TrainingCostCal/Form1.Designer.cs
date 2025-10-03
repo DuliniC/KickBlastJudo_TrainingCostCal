@@ -64,7 +64,7 @@
             totalCostLbl = new Label();
             label13 = new Label();
             groupBox3 = new GroupBox();
-            privateCoatchLbl = new Label();
+            privateCoachLbl = new Label();
             competitionCostLbl = new Label();
             trainingCostLbl = new Label();
             label12 = new Label();
@@ -89,7 +89,7 @@
             label1.Font = new Font("Sans Serif Collection", 19.7999973F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.Location = new Point(12, 31);
             label1.Name = "label1";
-            label1.Size = new Size(422, 82);
+            label1.Size = new Size(274, 112);
             label1.TabIndex = 1;
             label1.Text = "KickBlast Judo";
             // 
@@ -393,10 +393,10 @@
             costCalTab.Controls.Add(costAthleteSlctCbx);
             costCalTab.Controls.Add(label2);
             costCalTab.Controls.Add(groupBox2);
-            costCalTab.Location = new Point(4, 29);
+            costCalTab.Location = new Point(4, 40);
             costCalTab.Name = "costCalTab";
             costCalTab.Padding = new Padding(3);
-            costCalTab.Size = new Size(850, 678);
+            costCalTab.Size = new Size(850, 667);
             costCalTab.TabIndex = 1;
             costCalTab.Text = "Cost Calculator";
             costCalTab.UseVisualStyleBackColor = true;
@@ -431,7 +431,7 @@
             groupBox2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBox2.Location = new Point(33, 89);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(729, 538);
+            groupBox2.Size = new Size(771, 538);
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
             groupBox2.Text = "Monthly Statement";
@@ -477,7 +477,7 @@
             // 
             // groupBox3
             // 
-            groupBox3.Controls.Add(privateCoatchLbl);
+            groupBox3.Controls.Add(privateCoachLbl);
             groupBox3.Controls.Add(competitionCostLbl);
             groupBox3.Controls.Add(trainingCostLbl);
             groupBox3.Controls.Add(label12);
@@ -486,36 +486,36 @@
             groupBox3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupBox3.Location = new Point(18, 83);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(692, 217);
+            groupBox3.Size = new Size(721, 217);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
             // 
-            // privateCoatchLbl
+            // privateCoachLbl
             // 
-            privateCoatchLbl.AutoSize = true;
-            privateCoatchLbl.Location = new Point(248, 135);
-            privateCoatchLbl.Name = "privateCoatchLbl";
-            privateCoatchLbl.Size = new Size(49, 28);
-            privateCoatchLbl.TabIndex = 5;
-            privateCoatchLbl.Text = "0.00";
+            privateCoachLbl.AutoSize = true;
+            privateCoachLbl.Location = new Point(248, 135);
+            privateCoachLbl.Name = "privateCoachLbl";
+            privateCoachLbl.Size = new Size(416, 28);
+            privateCoachLbl.TabIndex = 5;
+            privateCoachLbl.Text = "Private Coaching Hours * Private Coaching Fee";
             // 
             // competitionCostLbl
             // 
             competitionCostLbl.AutoSize = true;
             competitionCostLbl.Location = new Point(248, 89);
             competitionCostLbl.Name = "competitionCostLbl";
-            competitionCostLbl.Size = new Size(49, 28);
+            competitionCostLbl.Size = new Size(365, 28);
             competitionCostLbl.TabIndex = 4;
-            competitionCostLbl.Text = "0.00";
+            competitionCostLbl.Text = "Competitions Entered * Competition Fee";
             // 
             // trainingCostLbl
             // 
             trainingCostLbl.AutoSize = true;
             trainingCostLbl.Location = new Point(248, 46);
             trainingCostLbl.Name = "trainingCostLbl";
-            trainingCostLbl.Size = new Size(49, 28);
+            trainingCostLbl.Size = new Size(463, 28);
             trainingCostLbl.TabIndex = 3;
-            trainingCostLbl.Text = "0.00";
+            trainingCostLbl.Text = "Fee for Plan * Sessions per Week * Weeks per month";
             // 
             // label12
             // 
@@ -630,7 +630,7 @@
         private Button athleteEditBtn;
         private Label competitionCostLbl;
         private Label trainingCostLbl;
-        private Label privateCoatchLbl;
+        private Label privateCoachLbl;
         private Label weightAnalysisLbl;
         private Label comEligibleLbl;
         private Button calCostBtn;

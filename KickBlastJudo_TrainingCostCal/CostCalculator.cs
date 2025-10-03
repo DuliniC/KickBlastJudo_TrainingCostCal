@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,32 +10,32 @@ namespace KickBlastJudo_TrainingCostCal
 {
     public class CostCalculator
     {
-        const decimal competitionFee = 250.00m; //per competition
-        const decimal privateTutionFee = 150.00m; // per hour
-
         private readonly Athlete _athlete;
+        private Dictionary<string, decimal> _feeLookup;
 
-        public CostCalculator(Athlete athlete)
+        public CostCalculator(Athlete athlete, Dictionary<string, decimal> feeLookup)
         {
             _athlete = athlete;
+            _feeLookup = feeLookup;
         }
         public decimal GetTrainingCost()
         {
-            if(_athlete.TrainingPlan == null)
+            if(_athlete.TrainingPlan != null)
             {
-                return _athlete.TrainingPlan.WeeklyFee * _athlete.TrainingPlan.SessionsPerWeek;
+                return _athlete.TrainingPlan.WeeklyFee * _athlete.TrainingPlan.SessionsPerWeek * 4;
             }
             return 0.00m;
         }
 
         public decimal GetCompetitionCost()
         {
-            return _athlete.CompetitionEntered * competitionFee;
+            
+            return _athlete.CompetitionEntered * _feeLookup["CompetitionFee"];
         }
 
         public decimal GetPrivateTutionCost()
         {
-            return _athlete.PrivateCoachingHours * privateTutionFee;
+            return _athlete.PrivateCoachingHours * _feeLookup["PrivateCoatchingFee"];
         }
 
         public decimal GetTotalCost()
@@ -45,5 +46,6 @@ namespace KickBlastJudo_TrainingCostCal
 
             return trainingCost + competitionCost + privateTutionCost;
         }   
+
     }
 }

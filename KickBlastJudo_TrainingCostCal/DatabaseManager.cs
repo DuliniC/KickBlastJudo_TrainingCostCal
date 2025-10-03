@@ -15,7 +15,7 @@ namespace KickBlastJudo_TrainingCostCal
         public DatabaseManager()
         {
             connectionString = ConfigurationManager.ConnectionStrings["KickBlastJudo"].ConnectionString;
-        }      
+        }
 
         public List<Athlete> GetAllAthletes()
         {
@@ -40,7 +40,7 @@ namespace KickBlastJudo_TrainingCostCal
 
                                 int weightCategoryId = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
                                 var weightCategory = weightCategories.FirstOrDefault(w => w.CategoryID == weightCategoryId);
-                                
+
                                 var athlete = new Athlete
                                 {
                                     AthleteID = reader.GetInt32(reader.GetOrdinal("AthleteID")),
@@ -138,8 +138,8 @@ namespace KickBlastJudo_TrainingCostCal
             }
             catch (Exception ex)
             {
-                 Console.WriteLine("An error occurred while editing the athlete: " + ex.Message);
-                 return 0; 
+                Console.WriteLine("An error occurred while editing the athlete: " + ex.Message);
+                return 0;
             }
         }
 
@@ -177,7 +177,7 @@ namespace KickBlastJudo_TrainingCostCal
 
                 throw;
             }
-            
+
         }
 
         public List<WeightCategory> GetWeightCategories()
@@ -205,6 +205,30 @@ namespace KickBlastJudo_TrainingCostCal
                 }
             }
             return categories;
+        }
+
+        public List<Fee> GetFees()
+        {
+            var fees = new List<Fee>();
+            string sql = "SELECT FeeId, FeeType, Amount FROM Fees";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    fees.Add(new Fee
+                    {
+                        FeeId = reader.GetInt32(0),
+                        FeeType = reader.GetString(1),
+                        Amount = reader.GetDecimal(2)
+                    });
+                }
+            }
+            return fees;
         }
     }
 }
