@@ -281,8 +281,7 @@ namespace KickBlastJudo_TrainingCostCal
         {
             var costCal = new CostCalculator(selectedAthlete);
 
-            trainingCostLbl.Text =  $"{selectedAthlete.TrainingPlan.WeeklyFee * selectedAthlete.TrainingPlan.SessionsPerWeek * 4} " +
-                                    $"= {costCal.GetTrainingCost().ToString()}";
+            trainingCostLbl.Text = $"{selectedAthlete.TrainingPlan.WeeklyFee * selectedAthlete.TrainingPlan.SessionsPerWeek * 4} ";
             competitionCostLbl.Text = costCal.GetCompetitionCost().ToString();
             privateCoatchLbl.Text = costCal.GetPrivateTutionCost().ToString();
             totalCostLbl.Text = costCal.GetTotalCost().ToString();
