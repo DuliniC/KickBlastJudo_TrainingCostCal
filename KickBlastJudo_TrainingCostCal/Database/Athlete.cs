@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KickBlastJudo_TrainingCostCal
+namespace KickBlastJudo_TrainingCostCal.Database
 {
     public class Athlete
     {
@@ -16,27 +16,6 @@ namespace KickBlastJudo_TrainingCostCal
         public int CompetitionEntered { get; set; }
         public int PrivateCoachingHours { get; set; }
 
-        public bool IsValidForCompetition()
-        {
-            return TrainingPlan == TrainingPlan.Intermediate || TrainingPlan == TrainingPlan.Elite;
-        }
-    }
-
-    public enum TrainingPlan
-    {
-        Beginner,
-        Intermediate,
-        Elite
-    }
-
-    public enum WeightCategory
-    {
-        Heavyweight,
-        Light_Heavyweight,
-        Middleweight,
-        Light_Middleweight,
-        Lightweight,
-        Flyweight
     }
 
 }
